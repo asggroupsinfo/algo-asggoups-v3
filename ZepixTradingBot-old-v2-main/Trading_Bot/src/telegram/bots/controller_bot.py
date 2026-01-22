@@ -49,13 +49,17 @@ from src.telegram.menus.sessions_menu import SessionsMenu
 from src.telegram.menus.voice_menu import VoiceMenu
 from src.telegram.menus.settings_menu import SettingsMenu
 
-# Import Handlers
-from src.telegram.handlers.trading.positions_handler import PositionsHandler
+# Import Handlers (New Structure)
+from src.telegram.commands.system.start_handler import StartHandler
+from src.telegram.commands.system.status_handler import StatusHandler
+from src.telegram.commands.trading.positions_handler import PositionsHandler
+from src.telegram.commands.risk.setlot_handler import SetLotHandler
+# ... (Legacy imports kept for compatibility until full switch)
 from src.telegram.handlers.trading.orders_handler import OrdersHandler
 from src.telegram.handlers.trading.close_handler import CloseHandler
 from src.telegram.handlers.trading.trading_info_handler import TradingInfoHandler
 from src.telegram.handlers.risk.risk_settings_handler import RiskSettingsHandler
-from src.telegram.handlers.risk.set_lot_handler import SetLotHandler
+# from src.telegram.handlers.risk.set_lot_handler import SetLotHandler # Replaced
 from src.telegram.handlers.analytics.analytics_handler import AnalyticsHandler
 from src.telegram.handlers.plugins.plugin_handler import PluginHandler
 from src.telegram.handlers.plugins.v3_handler import V3Handler
@@ -114,12 +118,17 @@ class ControllerBot(BaseIndependentBot):
         self.settings_menu = SettingsMenu(self)
 
         # Initialize Handlers
-        self.positions_handler = PositionsHandler(self)
+        self.start_handler = StartHandler(self)
+        self.status_handler = StatusHandler(self)
+        self.positions_handler = PositionsHandler(self) # New Class
+        self.set_lot_handler = SetLotHandler(self) # New Class
+
+        # self.positions_handler = PositionsHandler(self) # Legacy
         self.orders_handler = OrdersHandler(self)
         self.close_handler = CloseHandler(self)
         self.trading_info_handler = TradingInfoHandler(self)
         self.risk_settings_handler = RiskSettingsHandler(self)
-        self.set_lot_handler = SetLotHandler(self)
+        # self.set_lot_handler = SetLotHandler(self) # Legacy
         self.analytics_handler = AnalyticsHandler(self)
         self.plugin_handler = PluginHandler(self)
         self.v3_handler = V3Handler(self)
@@ -226,10 +235,8 @@ class ControllerBot(BaseIndependentBot):
     # =========================================================================
 
     async def handle_start(self, update: Update, context: ContextTypes.DEFAULT_TYPE):
-        """Handle /start command - Entry point to V5 Menu System"""
-        user_id = update.effective_user.id
-        logger.info(f"[ControllerBot] /start called by {user_id}")
-        await self.main_menu.send_menu(update, context)
+        """Handle /start command (Delegated to StartHandler)"""
+        await self.start_handler.handle(update, context)
 
     async def handle_callback(self, update: Update, context: ContextTypes.DEFAULT_TYPE):
         """Handle all callback queries via Router (Wrapped for Safety)"""
@@ -312,12 +319,11 @@ class ControllerBot(BaseIndependentBot):
 
     async def handle_risk_setlot_start(self, update, context):
         """Callback Trigger for Lot Wizard"""
-        if await self.command_interceptor.intercept(update, context, "/setlot"):
-            return
-        await self.risk_flow.start_set_lot(update, context)
+        await self.set_lot_handler.handle(update, context)
 
     # --- Trading Handlers ---
     async def handle_trading_positions(self, update, context):
+        """View positions (Delegated to PositionsHandler)"""
         await self.positions_handler.handle(update, context)
 
     async def handle_trading_orders(self, update, context):
