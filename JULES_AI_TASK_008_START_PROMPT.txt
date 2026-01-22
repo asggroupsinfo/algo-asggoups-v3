@@ -1,0 +1,59 @@
+═══════════════════════════════════════════════════════════════
+🕵️ JULES AI - TASK 008 VERIFICATION (THE FINAL EXAM)
+═══════════════════════════════════════════════════════════════
+
+Hello Jules AI!
+
+TASKS 001-007 are marked complete. Now we verify.
+
+**YOUR MISSION:**
+Audit the current codebase against the V5 Architecture Plans with ZERO TOLERANCE.
+
+📋 AUDIT SCOPE:
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+1. **Source Truth:** `Updates/V5 COMMAND TELEGRAM/` (Docs 01-06)
+2. **Target:** `src/telegram/`
+
+🔍 VERIFICATION CHECKLIST (Execute Exactly):
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+**1. STRUCTURE CHECK**
+   - Does `src/telegram/core/base_command_handler.py` exist and have `plugin_context`?
+   - Does `src/telegram/plugins/command_interceptor.py` exist?
+   - Does `src/telegram/flows/trading_flow.py` exist?
+
+**2. 144 COMMAND CHECK**
+   - Count the files in `src/telegram/commands/`.
+   - Are there 30 files in `v6/`?
+   - Are there 18 files in `trading/`?
+   - If ANY are missing, REPORT THEM.
+
+**3. CONTROLLER BOT WIRING**
+   - Open `src/telegram/bots/controller_bot.py`.
+   - Search for `self.app.add_handler(CommandHandler("v6_status", ...))`.
+   - Confirm it points to the NEW handler, not a dummy function.
+
+**4. ZERO-TYPING FLOW CHECK**
+   - Open `src/telegram/flows/trading_flow.py`.
+   - Does it handle `buy_plugin_v3` -> `buy_v3_symbol_EURUSD` chain?
+
+📝 REPORTING FORMAT (Update AUDIT_REPORT_TASK_008.md):
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+### ✅ PASSED
+- [Item]
+
+### ❌ FAILED
+- [Item]: Expected X, Found Y
+
+### ⚠️ WARNING
+- [Item]: Implemented but looks different
+
+🚀 EXECUTION:
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+1. Read the codebase state.
+2. Compare with `JULES_AI_TASK_008_VERIFICATION.md`.
+3. Generate the Report.
+4. **IF** discrepancies are found, FIX THEM IMMEDIATELY if minor.
+5. **IF** major discrepancies, STOP and ask for guidance.
+
+**START AUDIT.**
