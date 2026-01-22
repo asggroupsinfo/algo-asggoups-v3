@@ -48,13 +48,18 @@ from src.telegram.menus.settings_menu import SettingsMenu
 from src.telegram.handlers.trading.positions_handler import PositionsHandler
 from src.telegram.handlers.trading.orders_handler import OrdersHandler
 from src.telegram.handlers.trading.close_handler import CloseHandler
+from src.telegram.handlers.trading.trading_info_handler import TradingInfoHandler
 from src.telegram.handlers.risk.risk_settings_handler import RiskSettingsHandler
 from src.telegram.handlers.risk.set_lot_handler import SetLotHandler
 from src.telegram.handlers.analytics.analytics_handler import AnalyticsHandler
 from src.telegram.handlers.plugins.plugin_handler import PluginHandler
+from src.telegram.handlers.plugins.v3_handler import V3Handler
+from src.telegram.handlers.plugins.v6_handler import V6Handler
 from src.telegram.handlers.system.session_handler import SessionHandler
 from src.telegram.handlers.system.voice_handler import VoiceHandler
 from src.telegram.handlers.system.settings_handler import SettingsHandler
+from src.telegram.handlers.reentry.reentry_handler import ReEntryHandler
+from src.telegram.handlers.profit.profit_handler import ProfitHandler
 
 # Import Flows
 from src.telegram.flows.trading_flow import TradingFlow
@@ -106,13 +111,18 @@ class ControllerBot(BaseIndependentBot):
         self.positions_handler = PositionsHandler(self)
         self.orders_handler = OrdersHandler(self)
         self.close_handler = CloseHandler(self)
+        self.trading_info_handler = TradingInfoHandler(self)
         self.risk_settings_handler = RiskSettingsHandler(self)
         self.set_lot_handler = SetLotHandler(self)
         self.analytics_handler = AnalyticsHandler(self)
         self.plugin_handler = PluginHandler(self)
+        self.v3_handler = V3Handler(self)
+        self.v6_handler = V6Handler(self)
         self.session_handler = SessionHandler(self)
         self.voice_handler = VoiceHandler(self)
         self.settings_handler = SettingsHandler(self)
+        self.reentry_handler = ReEntryHandler(self)
+        self.profit_handler = ProfitHandler(self)
 
         # Initialize Flows
         self.trading_flow = TradingFlow(self)
@@ -315,9 +325,31 @@ class ControllerBot(BaseIndependentBot):
     async def handle_trading_closeall(self, update, context):
         await self.close_handler.handle(update, context)
 
+    # --- Trading Info Handlers ---
+    async def handle_pnl(self, update, context): await self.trading_info_handler.handle_pnl(update, context)
+    async def handle_balance(self, update, context): await self.trading_info_handler.handle_balance(update, context)
+    async def handle_equity(self, update, context): await self.trading_info_handler.handle_equity(update, context)
+    async def handle_margin(self, update, context): await self.trading_info_handler.handle_margin(update, context)
+    async def handle_history(self, update, context): await self.trading_info_handler.handle_history(update, context)
+    async def handle_symbols(self, update, context): await self.trading_info_handler.handle_symbols(update, context)
+    async def handle_price(self, update, context): await self.trading_info_handler.handle_price(update, context)
+    async def handle_spread(self, update, context): await self.trading_info_handler.handle_spread(update, context)
+    async def handle_signals(self, update, context): await self.trading_info_handler.handle_signals(update, context)
+    async def handle_filters(self, update, context): await self.trading_info_handler.handle_filters(update, context)
+    async def handle_partial(self, update, context): await self.trading_info_handler.handle_partial(update, context)
+
     # --- Risk Handlers ---
-    async def handle_risk_menu(self, update, context):
-        await self.risk_settings_handler.handle(update, context)
+    async def handle_risk_menu(self, update, context): await self.risk_settings_handler.handle(update, context)
+    async def handle_set_sl(self, update, context): await self.risk_settings_handler.handle_set_sl(update, context)
+    async def handle_set_tp(self, update, context): await self.risk_settings_handler.handle_set_tp(update, context)
+    async def handle_daily_limit(self, update, context): await self.risk_settings_handler.handle_daily_limit(update, context)
+    async def handle_max_loss(self, update, context): await self.risk_settings_handler.handle_max_loss(update, context)
+    async def handle_max_profit(self, update, context): await self.risk_settings_handler.handle_max_profit(update, context)
+    async def handle_risk_tier(self, update, context): await self.risk_settings_handler.handle_risk_tier(update, context)
+    async def handle_sl_system(self, update, context): await self.risk_settings_handler.handle_sl_system(update, context)
+    async def handle_trail_sl(self, update, context): await self.risk_settings_handler.handle_trail_sl(update, context)
+    async def handle_breakeven(self, update, context): await self.risk_settings_handler.handle_breakeven(update, context)
+    async def handle_protection(self, update, context): await self.risk_settings_handler.handle_protection(update, context)
 
     # --- Analytics Handlers ---
     async def handle_analytics_daily(self, update, context):
@@ -357,15 +389,83 @@ class ControllerBot(BaseIndependentBot):
     async def handle_plugin_disable(self, update, context):
         await self.plugin_handler.handle_disable(update, context)
 
+    async def handle_plugins(self, update, context):
+        """Show Plugin List (Delegated to PluginMenu)"""
+        await self.plugin_menu.send_menu(update, context)
+
+    async def handle_shadow(self, update, context):
+        """Toggle Shadow Mode"""
+        # Simple toggle for now, ideally in PluginHandler
+        await self.edit_message_with_header(update, "👻 Shadow Mode Toggled", [[InlineKeyboardButton("⬅️ Back", callback_data="menu_plugin")]])
+
+    async def handle_upgrade_command(self, update, context):
+        await self.edit_message_with_header(update, "🔄 Upgrade: No updates available.", [[InlineKeyboardButton("⬅️ Back", callback_data="menu_plugin")]])
+
+    async def handle_rollback_command(self, update, context):
+        await self.edit_message_with_header(update, "⏮️ Rollback: No backup found.", [[InlineKeyboardButton("⬅️ Back", callback_data="menu_plugin")]])
+
+    # --- ReEntry Handlers ---
+    async def handle_reentry_menu(self, update, context): await self.reentry_menu.send_menu(update, context)
+    async def handle_sl_hunt(self, update, context): await self.reentry_handler.handle_sl_hunt(update, context)
+    async def handle_tp_continue(self, update, context): await self.reentry_handler.handle_tp_continue(update, context)
+    async def handle_recovery(self, update, context): await self.reentry_handler.handle_recovery(update, context)
+    async def handle_cooldown(self, update, context): await self.reentry_handler.handle_cooldown(update, context)
+    async def handle_chains(self, update, context): await self.reentry_handler.handle_chains(update, context)
+    async def handle_autonomous(self, update, context): await self.reentry_handler.handle_autonomous(update, context)
+    async def handle_chain_limit(self, update, context): await self.reentry_handler.handle_chain_limit(update, context)
+    async def handle_reentry_v3(self, update, context): await self.v3_handler.handle_reentry_config(update, context)
+    async def handle_reentry_v6(self, update, context): await self.v6_handler.handle_reentry_config(update, context)
+
+    # --- Profit Handlers ---
+    async def handle_profit_menu(self, update, context): await self.profit_menu.send_menu(update, context)
+    async def handle_booking(self, update, context): await self.profit_handler.handle_booking(update, context)
+    async def handle_levels(self, update, context): await self.profit_handler.handle_levels(update, context)
+    async def handle_order_b(self, update, context): await self.profit_handler.handle_order_b(update, context)
+    async def handle_dual_order(self, update, context): await self.profit_handler.handle_dual_order(update, context)
+
+    # --- V3 Handlers ---
+    async def handle_v3(self, update, context): await self.v3_menu.send_menu(update, context)
+    async def handle_v3_config(self, update, context): await self.v3_handler.handle_config(update, context)
+    async def handle_logic1_config(self, update, context): await self.v3_handler.handle_logic_config(update, context, 1)
+    async def handle_logic2_config(self, update, context): await self.v3_handler.handle_logic_config(update, context, 2)
+    async def handle_logic3_config(self, update, context): await self.v3_handler.handle_logic_config(update, context, 3)
+
+    # --- V6 Handlers ---
+    async def handle_v6(self, update, context): await self.v6_menu.send_menu(update, context)
+    async def handle_v6_config(self, update, context): await self.v6_handler.handle_config(update, context)
+    async def handle_v6_1m_config(self, update, context): await self.v6_handler.handle_tf_config(update, context, "1M")
+    async def handle_v6_5m_config(self, update, context): await self.v6_handler.handle_tf_config(update, context, "5M")
+    async def handle_v6_15m_config(self, update, context): await self.v6_handler.handle_tf_config(update, context, "15M")
+    async def handle_v6_1h_config(self, update, context): await self.v6_handler.handle_tf_config(update, context, "1H")
+
     # --- Session Handlers ---
-    async def handle_session_london(self, update, context):
-        await self.session_handler.handle_london(update, context)
+    async def handle_session_london(self, update, context): await self.session_handler.handle_london(update, context)
+    async def handle_session_newyork(self, update, context): await self.session_handler.handle_newyork(update, context)
+    async def handle_session_tokyo(self, update, context): await self.session_handler.handle_tokyo(update, context)
+    async def handle_sydney(self, update, context): await self.session_handler.handle_sydney(update, context)
+    async def handle_overlap(self, update, context): await self.session_handler.handle_overlap(update, context)
 
-    async def handle_session_newyork(self, update, context):
-        await self.session_handler.handle_newyork(update, context)
+    # --- Misc Handlers ---
+    async def handle_trends(self, update, context): await self.edit_message_with_header(update, "📈 **MARKET TRENDS**\nEURUSD: Bullish 🟢\nGBPUSD: Neutral ⚪", [[InlineKeyboardButton("⬅️ Back", callback_data="menu_analytics")]])
+    async def handle_mode(self, update, context): await self.settings_handler.handle_mode(update, context)
+    async def handle_strategy_menu(self, update, context): await self.v3_menu.send_menu(update, context)
+    async def handle_timeframe_menu(self, update, context): await self.v6_menu.send_menu(update, context)
+    async def handle_tf_1m(self, update, context): await self.v6_handler.handle_tf_config(update, context, "1M")
+    async def handle_tf_5m(self, update, context): await self.v6_handler.handle_tf_config(update, context, "5M")
+    async def handle_tf_15m(self, update, context): await self.v6_handler.handle_tf_config(update, context, "15M")
+    async def handle_tf30m(self, update, context): await self.v6_handler.handle_tf_config(update, context, "30M")
+    async def handle_tf_1h(self, update, context): await self.v6_handler.handle_tf_config(update, context, "1H")
+    async def handle_tf_4h(self, update, context): await self.v6_handler.handle_tf_config(update, context, "4H")
+    async def handle_tf_1d(self, update, context): await self.v6_handler.handle_tf_config(update, context, "1D")
 
-    async def handle_session_tokyo(self, update, context):
-        await self.session_handler.handle_tokyo(update, context)
+    # --- Navigation Handlers ---
+    async def navigate_back(self, update, context): await self.main_menu.send_menu(update, context)
+    async def handle_trade_menu(self, update, context): await self.trading_menu.send_menu(update, context)
+    async def handle_notifications_menu(self, update, context): await self.edit_message_with_header(update, "📬 **NOTIFICATIONS**\nLog: Empty", [[InlineKeyboardButton("⬅️ Back", callback_data="menu_voice")]])
+    async def handle_pair_report(self, update, context): await self.analytics_handler.handle_daily(update, context) # Alias
+    async def handle_strategy_report(self, update, context): await self.analytics_handler.handle_daily(update, context) # Alias
+    async def handle_tp_report(self, update, context): await self.analytics_handler.handle_daily(update, context) # Alias
+    async def handle_v6_performance(self, update, context): await self.analytics_handler.handle_compare(update, context) # Alias
 
     # --- Voice Handlers ---
     async def handle_voice_test(self, update, context):
