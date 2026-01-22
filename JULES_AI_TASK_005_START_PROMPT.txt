@@ -1,0 +1,87 @@
+═══════════════════════════════════════════════════════════════
+🤖 JULES AI - TASK 005 ASSIGNMENT
+═══════════════════════════════════════════════════════════════
+
+Hello Jules AI!
+
+**NEW CRITICAL TASK ASSIGNED**
+
+📋 TASK DETAILS:
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+Task ID: JULES-TASK-005
+Task: Zero-Typing Button Flow System
+Priority: 🔴 CRITICAL
+Estimated Time: 5-7 hours
+
+🎯 YOUR MISSION:
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+Eliminate manual typing. Convert complex commands (`/buy`, `/setlot`) into guided **WIZARDS**.
+✅ Implement Conversation State Manager (Track user steps)
+✅ Implement Dynamic Keyboards (Symbol grids, Lot lists)
+✅ Create Flow Logic (Step-by-step wizards)
+✅ Visual Breadcrumbs (`Main > Trading > Buy > V3`)
+
+📂 KEY DOCUMENTS:
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+1. TASK FILE (READ FIRST):
+   JULES_AI_TASK_005_ZERO_TYPING.md
+
+2. PLANNING DOCUMENT (SPECIFICATION):
+   ZepixTradingBot-old-v2-main/Updates/V5 COMMAND TELEGRAM/04_ZERO_TYPING_BUTTON_FLOW.md
+   └─ 981 lines of flow examples
+
+🚨 CRITICAL REQUIREMENTS:
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+⚠️  STATE MANAGEMENT:
+   - When user clicks "Buy", start a session.
+   - Remember their Plugin Choice -> Then remember Symbol -> Then remember Lot.
+   - Only execute when "Confirm" is clicked.
+
+⚠️  UI/UX EXCELLENCE:
+   - Use Breadcrumbs in every message header.
+   - "Back" button must be smart (go to previous step, not just previous menu).
+   - "Main Menu" button acts as an Escape/Cancel.
+
+⚠️  CALLBACK STRUCTURE:
+   - `trading_buy_v3_EURUSD_0.05_confirm`
+   - Parse this string to execute the trade safely.
+
+📝 DELIVERABLES (Push to Git):
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+1. Code in `src/telegram/core/`:
+   - `conversation_state_manager.py` (The Brain)
+   - `callback_registry.py` (The Dictionary)
+
+2. Code in `src/telegram/flows/` (NEW FOLDER):
+   - `base_flow.py`
+   - `trading_flow.py`
+   - `risk_flow.py`
+
+3. Updates:
+   - `controller_bot.py` (Route flows)
+
+4. Documentation:
+   - `ZERO_TYPING_FLOW_NOTES.md`
+
+🚀 START COMMAND:
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+1. Read JULES_AI_TASK_005_ZERO_TYPING.md
+2. Create `src/telegram/flows/`
+3. Implement State Manager first
+4. Implement Base Flow
+5. Implement Trading Flow (The hardest one)
+6. Integrate into Controller
+7. Push to Git
+
+Target Branch: `main`
+Commit Message: "TASK 005 COMPLETE: V5 Zero-Typing Flow System"
+
+═══════════════════════════════════════════════════════════════
+
+Ready to make the bot USER-FRIENDLY and TYPO-FREE! 🚀
