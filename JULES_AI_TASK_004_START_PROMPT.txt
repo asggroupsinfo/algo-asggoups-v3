@@ -1,0 +1,84 @@
+═══════════════════════════════════════════════════════════════
+🤖 JULES AI - TASK 004 ASSIGNMENT
+═══════════════════════════════════════════════════════════════
+
+Hello Jules AI!
+
+**NEW CRITICAL TASK ASSIGNED**
+
+📋 TASK DETAILS:
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+Task ID: JULES-TASK-004
+Task: V5 Plugin Layer Architecture
+Priority: 🔴 CRITICAL
+Estimated Time: 4-6 hours
+
+🎯 YOUR MISSION:
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+Implement the **MIDDLEWARE LAYER** that makes the bot plugin-aware:
+✅ Context Manager (Stores User Selection)
+✅ Command Interceptor (Checks Context)
+✅ Selection Menu (UI for V3/V6 Choice)
+✅ Auto-Context (Smart Routing)
+
+📂 KEY DOCUMENTS:
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+1. TASK FILE (READ FIRST):
+   JULES_AI_TASK_004_PLUGIN_ARCHITECTURE.md
+
+2. PLANNING DOCUMENT (SPECIFICATION):
+   ZepixTradingBot-old-v2-main/Updates/V5 COMMAND TELEGRAM/03_PLUGIN_LAYER_ARCHITECTURE.md
+   └─ 527 lines of logic
+
+🚨 CRITICAL REQUIREMENTS:
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+⚠️  INTERCEPTION LOGIC:
+   - When user types `/positions` -> Check Context.
+   - If User selected "V3" 2 mins ago -> Show V3 Positions immediately.
+   - If NO selection -> Show "Select Plugin" Menu.
+
+⚠️  SMART ROUTING:
+   - `/v3_config` -> MUST auto-select V3 context.
+   - `/v6_status` -> MUST auto-select V6 context.
+
+⚠️  RE-EXECUTION:
+   - After user clicks "V3 Only" in selection menu -> Bot MUST auto-execute the original `/positions` command.
+
+📝 DELIVERABLES (Push to Git):
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+1. Code in `src/telegram/interceptors/`:
+   - `plugin_context_manager.py`
+   - `command_interceptor.py`
+
+2. Code in `src/telegram/menus/`:
+   - `plugin_selection_menu.py`
+
+3. Updates:
+   - `controller_bot.py` (Initialize System)
+   - `callback_router.py` (Handle Selection)
+
+4. Documentation:
+   - `PLUGIN_ARCH_NOTES.md`
+
+🚀 START COMMAND:
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+1. Read JULES_AI_TASK_004_PLUGIN_ARCHITECTURE.md
+2. Create `src/telegram/interceptors/`
+3. Implement Context Manager first
+4. Implement Interceptor logic
+5. Integrate into ControllerBot
+6. Verify with test commands
+7. Push to Git
+
+Target Branch: `main`
+Commit Message: "TASK 004 COMPLETE: V5 Plugin Architecture Implementation"
+
+═══════════════════════════════════════════════════════════════
+
+Ready to make the bot SMART and CONTEXT-AWARE! 🚀
