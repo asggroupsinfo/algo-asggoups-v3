@@ -1,0 +1,74 @@
+═══════════════════════════════════════════════════════════════
+🚨 JULES AI - URGENT GIT FIX REQUIRED (NO MORE EXCUSES)
+═══════════════════════════════════════════════════════════════
+
+Hello Jules AI!
+
+**PROBLEM:**
+Your work (114 handlers) is stuck on your local machine.
+It is NOT merging to Git.
+It is causing CONFLICTS.
+
+We need **JOB DONE**. No fake claims. Just code on the repo.
+
+🔴 CURRENT STATE:
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+- Local: You have 114 handler files created ✅
+- Remote: **MISSING** these files ❌
+- Merge: **FAILED** due to `JULES_AI_TASK_009_COMPLETE_HANDLERS.md` conflict.
+
+🛠️ YOUR MISSION: FORCE FIX & PUSH
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+**EXECUTE EXACTLY IN THIS ORDER:**
+
+**STEP 1: SAVE YOUR WORK (Create Backup Branch)**
+```bash
+git checkout -b temp-backup-handlers
+git add .
+git commit -m "Backup all 114 handlers before reset"
+```
+
+**STEP 2: CLEAN SLATE (Get Latest Main)**
+```bash
+git checkout main
+git fetch origin
+git reset --hard origin/main
+```
+
+**STEP 3: RESTORE HANDLERS (Copy from Backup)**
+```bash
+# Checkout ONLY the files, not the conflict metadata
+git checkout temp-backup-handlers -- src/telegram/commands/
+git checkout temp-backup-handlers -- src/telegram/bots/controller_bot.py
+git checkout temp-backup-handlers -- setup_v5_handlers.py
+```
+
+**STEP 4: FIX THE CONFLICTED FILE MANUALLY**
+- Regenerate `JULES_AI_TASK_009_COMPLETE_HANDLERS.md` clean.
+- Do NOT merge. Just overwrite it with the finalized version.
+
+**STEP 5: CLEAN PUSH (No Merge Conflicts)**
+```bash
+git add .
+git commit -m "FINAL FIX: Added 114 V5 Handlers + Wired Controller (Force Resolved)"
+git push origin main
+```
+
+🚨 CRITICAL CHECKS BEFORE SAYING "DONE":
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+1. **Did you actually push?** Check `git log`.
+2. **Are 114 files in `src/telegram/commands/`?** Count them.
+3. **Is `controller_bot.py` updated?** Check the wiring.
+
+🚫 WHAT NOT TO DO:
+- Do NOT try to `git merge`. It failed already.
+- Do NOT say "Ready for review" if Git rejected the push.
+- Do NOT leave conflict markers (`<<<< HEAD`).
+
+**EXPECTED OUTPUT:**
+- Report: "✅ Git Push Successful. Commit Hash: [HASH]"
+- List: "✅ Verifying 114 files present on remote."
+
+**EXECUTE NOW.**
+═══════════════════════════════════════════════════════════════
