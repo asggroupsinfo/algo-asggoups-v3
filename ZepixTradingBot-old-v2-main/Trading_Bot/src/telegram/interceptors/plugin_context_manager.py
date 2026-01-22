@@ -1,133 +1,73 @@
 """
-Plugin Context Manager - V5 Plugin Selection System
+Plugin Context Manager - User State Management
 
-Manages user plugin selection context for command execution.
-Implements session-based context storage with automatic expiry.
+Stores user's plugin selection (V3/V6/Both) with expiry.
+Part of V5 Plugin Architecture.
 
-Version: 1.1.0 (Expiry Warning)
+Version: 1.0.0
 Created: 2026-01-21
-Part of: TELEGRAM_V5_PLUGIN_SELECTION_UPGRADE
 """
 
-import logging
-from typing import Dict, Optional, Tuple
 from datetime import datetime, timedelta
-from threading import Lock
-
-logger = logging.getLogger(__name__)
-
+from typing import Dict, Optional, Any
 
 class PluginContextManager:
-    """
-    Manages plugin selection context for each user session.
+    """Singleton to manage plugin contexts per user"""
 
-    Features:
-    - Per-user plugin context storage
-    - Automatic 5-minute expiry
-    - Thread-safe operations
-    - Context validation
-    - Cleanup of expired contexts
-    """
+    _instance = None
 
-    # Class-level storage
-    _user_contexts: Dict[int, Dict] = {}
-    _lock = Lock()  # Thread safety
-
-    # Configuration
-    DEFAULT_EXPIRY_SECONDS = 300  # 5 minutes
-    WARNING_THRESHOLD_SECONDS = 60 # Warn if < 60s remain
-    VALID_PLUGINS = ['v3', 'v6', 'both']
+    def __new__(cls):
+        if cls._instance is None:
+            cls._instance = super(PluginContextManager, cls).__new__(cls)
+            cls._instance.contexts = {}  # {chat_id: {'plugin': 'v3', 'command': 'cmd', 'timestamp': dt}}
+            cls._instance.expiry_seconds = 300  # 5 minutes
+        return cls._instance
 
     @classmethod
-    def set_plugin_context(
-        cls,
-        chat_id: int,
-        plugin: str,
-        command: str = None,
-        expiry_seconds: int = None
-    ) -> bool:
-        """Set plugin context for user session."""
-        if plugin not in cls.VALID_PLUGINS:
-            logger.error(f"[PluginContext] Invalid plugin: {plugin}")
-            return False
-
-        expiry = expiry_seconds or cls.DEFAULT_EXPIRY_SECONDS
-
-        with cls._lock:
-            cls._user_contexts[chat_id] = {
-                'plugin': plugin,
-                'timestamp': datetime.now(),
-                'expires_in': expiry,
-                'command': command,
-                'warning_sent': False
-            }
-
-        logger.info(
-            f"[PluginContext] Set context for chat {chat_id}: "
-            f"plugin={plugin}, cmd={command}, expiry={expiry}s"
-        )
-        return True
-
-    @classmethod
-    def get_plugin_context(cls, chat_id: int) -> Optional[str]:
-        """Get current plugin context for user."""
-        with cls._lock:
-            if chat_id not in cls._user_contexts:
-                return None
-
-            context = cls._user_contexts[chat_id]
-            elapsed = (datetime.now() - context['timestamp']).total_seconds()
-
-            if elapsed > context['expires_in']:
-                logger.debug(f"[PluginContext] Context expired for chat {chat_id}")
-                del cls._user_contexts[chat_id]
-                return None
-
-            return context['plugin']
-
-    @classmethod
-    def check_expiry_warnings(cls) -> Dict[int, str]:
+    def set_plugin_context(cls, chat_id: int, plugin: str, command: str = None):
         """
-        Check for contexts nearing expiry.
-        Returns dict {chat_id: plugin_name} of users to warn.
+        Set the plugin context for a user.
+        plugin: 'v3', 'v6', 'both'
         """
-        warnings = {}
-        with cls._lock:
-            for chat_id, ctx in cls._user_contexts.items():
-                if ctx.get('warning_sent'):
-                    continue
-
-                elapsed = (datetime.now() - ctx['timestamp']).total_seconds()
-                remaining = ctx['expires_in'] - elapsed
-
-                if 0 < remaining < cls.WARNING_THRESHOLD_SECONDS:
-                    warnings[chat_id] = ctx['plugin']
-                    ctx['warning_sent'] = True
-
-        return warnings
+        instance = cls()
+        instance.contexts[chat_id] = {
+            'plugin': plugin.lower(),
+            'command': command,
+            'timestamp': datetime.now()
+        }
 
     @classmethod
-    def clear_plugin_context(cls, chat_id: int) -> bool:
-        """Clear plugin context for user."""
-        with cls._lock:
-            if chat_id in cls._user_contexts:
-                del cls._user_contexts[chat_id]
-                return True
-            return False
+    def get_plugin_context(cls, chat_id: int) -> Dict[str, Any]:
+        """
+        Get the active plugin context.
+        Returns dict with 'plugin' key or {'plugin': None} if expired/missing.
+        """
+        instance = cls()
+        if chat_id not in instance.contexts:
+            return {'plugin': None}
+
+        ctx = instance.contexts[chat_id]
+
+        # Check expiry
+        if datetime.now() - ctx['timestamp'] > timedelta(seconds=instance.expiry_seconds):
+            del instance.contexts[chat_id]
+            return {'plugin': None}
+
+        return ctx
 
     @classmethod
     def has_active_context(cls, chat_id: int) -> bool:
-        return cls.get_plugin_context(chat_id) is not None
+        """Check if user has a valid active context"""
+        ctx = cls.get_plugin_context(chat_id)
+        return ctx.get('plugin') is not None
 
-# Convenience functions
-def set_user_plugin(chat_id: int, plugin: str, command: str = None) -> bool:
-    return PluginContextManager.set_plugin_context(chat_id, plugin, command)
+    @classmethod
+    def clear_context(cls, chat_id: int):
+        """Clear user context"""
+        instance = cls()
+        if chat_id in instance.contexts:
+            del instance.contexts[chat_id]
 
-def get_user_plugin(chat_id: int) -> Optional[str]:
-    return PluginContextManager.get_plugin_context(chat_id)
-
-def clear_user_plugin(chat_id: int) -> bool:
-    return PluginContextManager.clear_plugin_context(chat_id)
-
-def has_plugin_selection(chat_id: int) -> bool:
-    return PluginContextManager.has_active_context(chat_id)
+# Alias for compatibility if needed
+set_user_plugin = PluginContextManager.set_plugin_context
+get_user_plugin = PluginContextManager.get_plugin_context

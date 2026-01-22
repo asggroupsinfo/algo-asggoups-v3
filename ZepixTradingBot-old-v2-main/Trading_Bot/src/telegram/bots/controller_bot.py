@@ -26,7 +26,7 @@ from src.telegram.core.callback_router import CallbackRouter
 from src.telegram.headers.sticky_header_builder import StickyHeaderBuilder # Updated to Headers Package
 from src.telegram.headers.header_refresh_manager import HeaderRefreshManager # Updated to Headers Package
 from src.telegram.core.conversation_state_manager import state_manager
-from src.telegram.core.plugin_interceptor import CommandInterceptor
+from src.telegram.interceptors.command_interceptor import CommandInterceptor
 from src.telegram.interceptors.plugin_context_manager import PluginContextManager
 # from src.telegram.core.header_manager import HeaderManager
 from src.telegram.core.command_registry import CommandRegistry
