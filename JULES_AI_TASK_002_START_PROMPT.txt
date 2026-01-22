@@ -1,0 +1,196 @@
+═══════════════════════════════════════════════════════════════
+🤖 JULES AI - TASK 002 ASSIGNMENT
+═══════════════════════════════════════════════════════════════
+
+Hello Jules AI!
+
+**NEW CRITICAL TASK ASSIGNED**
+
+📋 TASK DETAILS:
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+Task ID: JULES-TASK-002
+Task: V5 Telegram Menu Implementation
+Priority: 🔴 CRITICAL
+Estimated Time: 4-6 hours
+
+🎯 YOUR MISSION:
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+Implement COMPLETE V5 Telegram Menu System:
+✅ 12 Categories
+✅ 144 Commands
+✅ 400+ Button Interactions
+✅ Plugin-Aware Navigation (V3/V6)
+✅ ZERO TYPING interface
+
+📂 KEY DOCUMENTS:
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+1. TASK FILE (READ FIRST):
+   JULES_AI_TASK_002_V5_TELEGRAM_MENU.md
+
+2. PLANNING DOCUMENT (IMPLEMENTATION SPEC):
+   ZepixTradingBot-old-v2-main/Updates/V5 COMMAND TELEGRAM/01_MAIN_MENU_CATEGORY_DESIGN.md
+   └─ 1,477 lines of complete menu design
+   └─ IMPLEMENT EXACTLY AS DOCUMENTED!
+
+🚨 CRITICAL REQUIREMENTS:
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+⚠️  AS-IS IMPLEMENTATION - NO CHANGES ALLOWED!
+   - Implement EXACTLY as planning doc specifies
+   - DO NOT modify menu structures
+   - DO NOT change button layouts
+   - DO NOT skip any commands
+
+⚠️  100% IMPLEMENTATION REQUIRED:
+   - All 12 categories: MUST implement
+   - All 144 commands: MUST implement
+   - All button flows: MUST implement
+   - Plugin selection: MUST implement
+
+⚠️  TESTING MANDATORY:
+   - Test EVERY category
+   - Test EVERY command
+   - Test plugin selection (V3/V6/Both)
+   - Test ALL navigation paths
+   - Verify in REAL Telegram bot
+
+⚠️  GIT WORKFLOW (CRITICAL!):
+   After complete implementation:
+   
+   git add src/telegram/menu_*.py
+   git add IMPLEMENTATION_NOTES.md
+   git add MENU_STRUCTURE.md
+   git add TESTING_REPORT.md
+   git commit -m "TASK 002 COMPLETE: V5 Telegram Menu - 144 commands implemented"
+   git push origin main
+
+📊 12 CATEGORIES TO IMPLEMENT:
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+1. 🎛️ System (10 commands)
+2. 📊 Trading (18 commands)
+3. 🛡️ Risk Management (15 commands)
+4. 🔵 V3 Strategies (12 commands)
+5. 🟢 V6 Timeframes (30 commands)
+6. 📈 Analytics (15 commands)
+7. 🔄 Re-Entry (12 commands)
+8. 💰 Profit Booking (10 commands)
+9. 🔌 Plugins (8 commands)
+10. 🕐 Sessions (8 commands)
+11. 🔊 Voice Alerts (6 commands)
+12. ⚙️ Settings (10 commands)
+
+🎯 MAIN MENU DESIGN:
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+/start command shows:
+
+╔══════════════════════════════════════╗
+║   🤖 ZEPIX TRADING BOT V5.0          ║
+╠══════════════════════════════════════╣
+║  📊 Status: ACTIVE ✅                ║
+║  🕐 Time: 14:35:22 GMT               ║
+║  📈 Session: LONDON (Active)         ║
+║  💱 EURUSD: 1.0825 | GBPUSD: 1.2645  ║
+╠══════════════════════════════════════╣
+║         MAIN MENU                    ║
+╚══════════════════════════════════════╝
+
+[🎛️ System  ] [📊 Trading  ]
+[🛡️ Risk    ] [🔵 V3 Strat ]
+[🟢 V6 Frame] [📈 Analytics]
+[🔄 Re-Entry] [💰 Profit   ]
+[🔌 Plugins ] [🕐 Sessions ]
+[🔊 Voice   ] [⚙️ Settings ]
+
+🔑 KEY FEATURES:
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+✅ Plugin Selection:
+   - For applicable commands, show: [V3] [V6] [Both]
+   - Store selection in callback state
+   - Filter data based on selected plugin
+
+✅ Navigation:
+   - Every screen has [◀️ Back] [🏠 Main Menu]
+   - Max 4 levels deep
+   - Breadcrumb in header
+
+✅ Button Layout:
+   - 2-column for most buttons
+   - Full-width for critical actions
+   - Consistent emoji usage
+
+✅ Data Integration:
+   - Fetch real data from TradingEngine
+   - Show actual positions, P&L, stats
+   - Plugin-specific filtering
+
+📝 DELIVERABLES:
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+1. Code Files:
+   - menu_main.py (main menu)
+   - menu_system.py, menu_trading.py (etc. - 12 files)
+   - plugin_selector.py (plugin selection logic)
+   - navigation.py (state management)
+
+2. Documentation:
+   - IMPLEMENTATION_NOTES.md (what changed)
+   - MENU_STRUCTURE.md (visual map)
+   - TESTING_REPORT.md (test results)
+
+3. Testing:
+   - Test in real Telegram
+   - Execute ALL 144 commands
+   - Verify ALL buttons work
+   - Screenshot critical menus
+
+✅ SUCCESS CRITERIA:
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+Task is COMPLETE when:
+✓ All 12 categories implemented (100%)
+✓ All 144 commands functional (100%)
+✓ All buttons tested and working
+✓ Plugin selection working perfectly
+✓ Tested in real Telegram bot
+✓ ALL code pushed to main branch
+✓ Documentation delivered
+
+⏱️ TIMELINE:
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+Phase 1: Main Menu (30 min)
+Phase 2: 12 Submenus (1 hour)
+Phase 3: 144 Commands (2-3 hours)
+Phase 4: Plugin Logic (1 hour)
+Phase 5: Testing (1 hour)
+
+Total: 4-6 hours
+Progress Updates: Every 2 hours
+
+🚀 START COMMAND:
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+1. Read JULES_AI_TASK_002_V5_TELEGRAM_MENU.md completely
+2. Read planning document (01_MAIN_MENU_CATEGORY_DESIGN.md)
+3. Understand existing bot structure (from TASK 001 audit)
+4. Implement phase by phase
+5. Test thoroughly
+6. Push to Git
+
+🎯 REMEMBER:
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+• ZERO TOLERANCE for skipped commands
+• IMPLEMENT EXACTLY as planning doc
+• TEST EVERY single button
+• PUSH TO MAIN when complete! 
+
+═══════════════════════════════════════════════════════════════
+
+Ready to transform the Telegram bot into a complete button-based system! 🚀
