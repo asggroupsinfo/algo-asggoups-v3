@@ -1,35 +1,29 @@
 """
-Conversation State Manager - Multi-step Flow State Management
+Conversation State Manager - Multi-Step Flow Tracking
 
-Manages state for multi-step interactions (e.g., Buy flow, Settings flow).
-Includes thread-safe locking and state storage.
+Manages user state for multi-step wizards (e.g., Buy, SetLot).
+Stores temporary data (e.g., selected symbol, lot size) until execution.
+Part of V5 Zero-Typing System.
 
 Version: 1.0.0
 Created: 2026-01-21
-Part of: TELEGRAM_V5_ZERO_TYPING_UI
 """
 
-import logging
-import asyncio
-from typing import Dict, Any, Optional
-from datetime import datetime
-
-logger = logging.getLogger(__name__)
+from typing import Dict, Any, Optional, List
 
 class ConversationState:
-    """Store state for multi-step flows"""
+    """Stores state for a single user's conversation flow"""
 
     def __init__(self, command: str = None):
         self.command = command  # e.g., 'buy', 'setlot'
         self.step = 0  # Current step number
-        self.data = {}  # Collected data
-        self.breadcrumb = []  # Navigation path
-        self.timestamp = datetime.now()
+        self.data: Dict[str, Any] = {}  # Collected data
+        self.breadcrumb: List[str] = []  # Navigation path for header
+        self.last_message_id: Optional[int] = None # To edit same message
 
     def add_data(self, key: str, value: Any):
         """Add data collected in this step"""
         self.data[key] = value
-        self.timestamp = datetime.now() # Update timestamp on activity
 
     def next_step(self):
         """Move to next step"""
@@ -39,46 +33,35 @@ class ConversationState:
         """Get previously collected data"""
         return self.data.get(key, default)
 
-    def add_breadcrumb(self, label: str):
-        """Add navigation breadcrumb"""
-        self.breadcrumb.append(label)
+    def set_breadcrumb(self, path: List[str]):
+        """Update breadcrumb"""
+        self.breadcrumb = path
 
 class ConversationStateManager:
-    """Thread-safe state management"""
+    """Singleton to manage states for all users"""
 
-    def __init__(self):
-        self.states: Dict[int, ConversationState] = {}  # {chat_id: ConversationState}
-        self.locks: Dict[int, asyncio.Lock] = {}  # Per-user locks
+    _instance = None
 
-    def get_lock(self, chat_id: int) -> asyncio.Lock:
-        """Get or create lock for user"""
-        if chat_id not in self.locks:
-            self.locks[chat_id] = asyncio.Lock()
-        return self.locks[chat_id]
-
-    def get_state(self, chat_id: int) -> ConversationState:
-        """Get or create state for user"""
-        if chat_id not in self.states:
-            self.states[chat_id] = ConversationState()
-        return self.states[chat_id]
+    def __new__(cls):
+        if cls._instance is None:
+            cls._instance = super(ConversationStateManager, cls).__new__(cls)
+            cls._instance.states = {}  # {chat_id: ConversationState}
+        return cls._instance
 
     def start_flow(self, chat_id: int, command: str) -> ConversationState:
-        """Start a new flow, clearing old state"""
-        self.states[chat_id] = ConversationState(command)
-        return self.states[chat_id]
+        """Start a new flow"""
+        state = ConversationState(command)
+        self.states[chat_id] = state
+        return state
+
+    def get_state(self, chat_id: int) -> Optional[ConversationState]:
+        """Get active state"""
+        return self.states.get(chat_id)
 
     def clear_state(self, chat_id: int):
-        """Clear state after completion"""
+        """Clear state after completion or cancel"""
         if chat_id in self.states:
             del self.states[chat_id]
-
-    async def update_state(self, chat_id: int, updater_func):
-        """Update state with lock"""
-        lock = self.get_lock(chat_id)
-
-        async with lock:
-            state = self.get_state(chat_id)
-            await updater_func(state)
 
 # Global instance
 state_manager = ConversationStateManager()

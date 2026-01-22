@@ -1,81 +1,66 @@
 """
-Base Flow - Abstract Base Class for Conversation Flows
+Base Flow - Abstract Class for Wizards
 
-Version: 1.1.0 (Standardized Breadcrumbs)
+Provides common logic for step-by-step flows.
+Integrates with ConversationStateManager.
+
+Version: 1.0.0
 Created: 2026-01-21
-Part of: TELEGRAM_V5_ZERO_TYPING_UI
 """
 
-from abc import ABC, abstractmethod
-from typing import Dict, Any, Optional
 from telegram import Update, InlineKeyboardButton, InlineKeyboardMarkup
 from telegram.ext import ContextTypes
 from ..core.conversation_state_manager import state_manager
-from ..core.button_builder import ButtonBuilder
 from ..core.sticky_header_builder import StickyHeaderBuilder
 
-class BaseFlow(ABC):
-    """Base class for multi-step conversation flows"""
+class BaseFlow:
 
     def __init__(self, bot_instance):
         self.bot = bot_instance
         self.state_manager = state_manager
-        self.btn = ButtonBuilder
-
+        # Init header builder safely
         if hasattr(self.bot, 'sticky_header'):
-            self.header = self.bot.sticky_header
+            self.header_builder = self.bot.sticky_header
         else:
-            self.header = StickyHeaderBuilder()
+            self.header_builder = StickyHeaderBuilder()
 
-    async def start(self, update: Update, context: ContextTypes.DEFAULT_TYPE):
-        """Start the flow"""
+    async def start_flow(self, update: Update, context: ContextTypes.DEFAULT_TYPE, command: str):
+        """Initialize a flow"""
         chat_id = update.effective_chat.id
-        self.state_manager.start_flow(chat_id, self.flow_name)
-        await self.show_step(update, context, 0)
+        self.state_manager.start_flow(chat_id, command)
+        await self.show_step(update, context)
 
-    async def handle_callback(self, update: Update, context: ContextTypes.DEFAULT_TYPE):
+    async def handle_callback(self, update: Update, context: ContextTypes.DEFAULT_TYPE) -> bool:
         """Handle flow callback"""
-        chat_id = update.effective_chat.id
-        state = self.state_manager.get_state(chat_id)
+        # To be implemented by subclasses
+        return False
 
-        if state.command != self.flow_name:
-            return False
-
-        await self.process_step(update, context, state)
-        return True
-
-    def _format_breadcrumb(self, steps: list, current: int) -> str:
-        """
-        Generate standardized breadcrumb trail.
-        Example: ✅ Symbol → ▶️ Lot → ⏸️ Confirm
-        """
-        crumbs = []
-        for i, label in enumerate(steps):
-            if i < current:
-                crumbs.append(f"✅ {label}")
-            elif i == current:
-                crumbs.append(f"▶️ {label}")
-            else:
-                crumbs.append(f"⏸️ {label}")
-        return " → ".join(crumbs)
-
-    @abstractmethod
-    async def show_step(self, update: Update, context: ContextTypes.DEFAULT_TYPE, step: int):
-        """Show the current step UI"""
+    async def show_step(self, update: Update, context: ContextTypes.DEFAULT_TYPE):
+        """Show current step UI"""
+        # To be implemented by subclasses
         pass
 
-    @abstractmethod
-    async def process_step(self, update: Update, context: ContextTypes.DEFAULT_TYPE, state):
-        """Process input for current step"""
-        pass
-
-    async def cancel(self, update: Update, context: ContextTypes.DEFAULT_TYPE):
-        """Cancel flow"""
+    async def cancel_flow(self, update: Update, context: ContextTypes.DEFAULT_TYPE):
+        """Cancel and clean up"""
         chat_id = update.effective_chat.id
         self.state_manager.clear_state(chat_id)
-        await self.bot.handle_start(update, context)
+        if hasattr(self.bot, 'handle_start'):
+            await self.bot.handle_start(update, context)
 
-    @property
-    @abstractmethod
-    def flow_name(self) -> str:
-        pass
+    async def edit_message(self, update: Update, text: str, keyboard: list):
+        """Helper to edit message with header"""
+        header = self.header_builder.build_header(style='compact')
+        full_text = f"{header}\n{text}"
+
+        if update.callback_query:
+            await update.callback_query.edit_message_text(
+                text=full_text,
+                reply_markup=InlineKeyboardMarkup(keyboard),
+                parse_mode='Markdown'
+            )
+        else:
+            await update.message.reply_text(
+                text=full_text,
+                reply_markup=InlineKeyboardMarkup(keyboard),
+                parse_mode='Markdown'
+            )
