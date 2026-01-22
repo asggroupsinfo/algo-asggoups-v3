@@ -1,0 +1,98 @@
+═══════════════════════════════════════════════════════════════
+🤖 JULES AI - TASK 003 ASSIGNMENT
+═══════════════════════════════════════════════════════════════
+
+Hello Jules AI!
+
+**NEW CRITICAL TASK ASSIGNED**
+
+📋 TASK DETAILS:
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+Task ID: JULES-TASK-003
+Task: V5 Sticky Header & Auto-Refresh System
+Priority: 🔴 CRITICAL
+Estimated Time: 3-4 hours
+
+🎯 YOUR MISSION:
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+Implement the **REAL-TIME PREDICTIVE HEADER** that sits at the top of every menu:
+✅ Live Clock (GMT)
+✅ Active Session (London/NY/Tokyo)
+✅ Live Prices (EURUSD/GBPUSD)
+✅ Bot Status (Active/Paused)
+✅ **Auto-Refresh Logic (Every 30s)**
+
+📂 KEY DOCUMENTS:
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+1. TASK FILE (READ FIRST):
+   JULES_AI_TASK_003_STICKY_HEADER.md
+
+2. PLANNING DOCUMENT (SPECIFICATION):
+   ZepixTradingBot-old-v2-main/Updates/V5 COMMAND TELEGRAM/02_STICKY_HEADER_DESIGN.md
+   └─ 955 lines of header logic
+
+🚨 CRITICAL REQUIREMENTS:
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+⚠️  PERSISTENCE IS KEY:
+   - The header must appear on MAIN MENU.
+   - The header must persist when navigating to SUBMENUS.
+   - The header must persistent inside COMMANDS.
+
+⚠️  REAL-TIME UPDATES:
+   - Implement `HeaderRefreshManager`
+   - Use `asyncio` task to update header every 30 seconds
+   - MUST handle "MessageNotModified" errors
+
+⚠️  INTEGRATION:
+   - Modify `ControllerBot.py` to start refresh.
+   - Modify `BaseMenuBuilder` to include header.
+
+🎨 DESIGN TO IMPLEMENT:
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+╔══════════════════════════════════════╗
+║   🤖 ZEPIX TRADING BOT V5.0          ║
+╠══════════════════════════════════════╣
+║  📊 Status: ACTIVE ✅                ║
+║  🕐 Time: 14:35:22 GMT               ║
+║  📈 Session: LONDON (Active)         ║
+║  💱 EURUSD: 1.0825 | GBPUSD: 1.2645  ║
+╚══════════════════════════════════════╝
+
+📝 DELIVERABLES (Push to Git):
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+1. Code:
+   - `src/telegram/headers/sticky_header_builder.py`
+   - `src/telegram/headers/header_refresh_manager.py`
+   - `src/telegram/headers/header_clock.py`
+   - `src/telegram/headers/header_session.py`
+   - `src/telegram/headers/header_symbols.py`
+
+2. Updates:
+   - `controller_bot.py` (Add Refresh Logic)
+
+3. Documentation:
+   - `HEADER_IMPLEMENTATION_NOTES.md`
+
+🚀 START COMMAND:
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+1. Read JULES_AI_TASK_003_STICKY_HEADER.md
+2. Create `src/telegram/headers/` directory
+3. Implement core components first (Clock/Session)
+4. Implement Builder
+5. Implement Refresh Manager
+6. Integrate into ControllerBot
+7. Push to Git
+
+Target Branch: `main`
+Commit Message: "TASK 003 COMPLETE: V5 Sticky Header & Auto-Refresh System"
+
+═══════════════════════════════════════════════════════════════
+
+Ready to bring the bot to LIFE with real-time updates! 🚀
