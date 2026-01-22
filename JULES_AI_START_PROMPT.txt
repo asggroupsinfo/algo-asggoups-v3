@@ -1,0 +1,89 @@
+═══════════════════════════════════════════════════════════════
+🤖 JULES AI - TASK ASSIGNMENT
+═══════════════════════════════════════════════════════════════
+
+Hello Jules AI!
+
+You have been assigned TASK 001: Complete Codebase Audit & Production Readiness Verification
+
+📋 TASK DETAILS:
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+Repository: https://github.com/asggroupsinfo/algo-asggoups-v3
+Task File: JULES_AI_TASK_001_CODEBASE_AUDIT.md
+Priority: 🔴 HIGH
+Expected Time: 2-3 hours
+
+🎯 YOUR MISSION:
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+1. Pull the latest code from the repository
+2. Read the complete task file: JULES_AI_TASK_001_CODEBASE_AUDIT.md
+3. Perform a comprehensive audit of the entire codebase
+4. Create 5 detailed markdown reports:
+   ✅ 01_PROJECT_UNDERSTANDING.md
+   ✅ 02_CODE_QUALITY_REPORT.md
+   ✅ 03_PRODUCTION_READINESS_REPORT.md
+   ✅ 04_FEATURE_VERIFICATION_MATRIX.md
+   ✅ 05_MASTER_AUDIT_REPORT.md
+5. Push all reports to the main branch
+
+🚨 CRITICAL REQUIREMENTS:
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+⚠️  MANDATORY: After completing all reports, you MUST:
+
+   git add 01_PROJECT_UNDERSTANDING.md
+   git add 02_CODE_QUALITY_REPORT.md
+   git add 03_PRODUCTION_READINESS_REPORT.md
+   git add 04_FEATURE_VERIFICATION_MATRIX.md
+   git add 05_MASTER_AUDIT_REPORT.md
+   git commit -m "TASK 001 COMPLETE: Codebase Audit Reports - All 5 deliverables ready for review"
+   git push origin main
+
+⚠️  This is a GLOBAL RULE - The task is NOT complete until pushed to main branch!
+
+📝 WHAT TO SCAN:
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+✓ Complete project structure and architecture
+✓ All source code files for errors and bugs
+✓ All dependencies for vulnerabilities
+✓ Production readiness (can it run?)
+✓ All features (are they working?)
+✓ Code quality issues
+✓ Security vulnerabilities
+✓ Performance bottlenecks
+
+✅ SUCCESS CRITERIA:
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+Task is COMPLETE when:
+✓ All 5 markdown reports are created
+✓ Every file in project has been reviewed
+✓ Production readiness verdict is given with evidence
+✓ All features tested and status reported
+✓ ALL REPORTS PUSHED TO MAIN BRANCH (CRITICAL!)
+
+🔄 PROGRESS UPDATES:
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+Please provide updates every 4 hours on your progress.
+
+📂 WORKING DIRECTORY:
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+Local: C:\Users\Ansh Shivaay Gupta\Downloads\algo-asggoups-v2-main\algo-asggoups-v2-main
+Focus on: ZepixTradingBot-old-v2-main directory
+
+═══════════════════════════════════════════════════════════════
+
+🚀 START COMMAND FOR JULES AI:
+
+Please acknowledge this task and begin the comprehensive codebase audit.
+Start by reading the detailed task file (JULES_AI_TASK_001_CODEBASE_AUDIT.md)
+which contains all specifications, acceptance criteria, and deliverable formats.
+
+Remember: PUSH TO MAIN BRANCH WHEN DONE! 🎯
+
+═══════════════════════════════════════════════════════════════
