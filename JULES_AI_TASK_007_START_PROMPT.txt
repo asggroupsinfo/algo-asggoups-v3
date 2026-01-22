@@ -1,0 +1,72 @@
+═══════════════════════════════════════════════════════════════
+🤖 JULES AI - TASK 007 ASSIGNMENT (THE FINAL BOSS)
+═══════════════════════════════════════════════════════════════
+
+Hello Jules AI!
+
+**MISSION CRITICAL ALERT**: You are creating the SINGLE UNIFIED BOT.
+
+📋 TASK DETAILS:
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+Task ID: JULES-TASK-007
+Task: COMPLETE ARCHITECTURAL MERGE & UPGRADE
+Priority: 🔴🔴 SUPER CRITICAL (81% Features Currently Missing!)
+Goal: Migrate 144 Commands to Async Architecture
+
+🎯 YOUR MISSION:
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+Refactor `src/telegram/` into a modular, scalable architecture.
+1. ✅ **Structure:** Create `commands/`, `menus/`, `plugins/` folders.
+2. ✅ **Base Layer:** Implement `BaseCommandHandler` with Plugin Awareness.
+3. ✅ **Migration:** Port logic from Legacy (Sync) to Modern (Async).
+4. ✅ **Completeness:** Ensure `/buy`, `/sell`, `/v6`, `/analytics` ALL work.
+
+📂 KEY DOCUMENTS (READ & FOLLOW EXACTLY):
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+1. TASK FILE: JULES_AI_TASK_007_MIGRATION.md
+2. PLAN: Updates/V5 COMMAND TELEGRAM/06_COMPLETE_MERGE_EXECUTION_PLAN.md
+3. STRATEGY: Updates/V5 COMMAND TELEGRAM/COMPLETE_MERGE_AND_UPGRADE_STRATEGY.md
+
+🚨 EXECUTION ORDERS (DO NOT DEVIATE):
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+1. **PHASE 1: FOUNDATION** (No partial work)
+   - Setup folder structure.
+   - Implement Base Classes first.
+   - Move Interceptors/Managers to `core/` or `plugins/`.
+
+2. **PHASE 2: HANDLERS** (The Heavy Lifting)
+   - Do NOT dump code in one file.
+   - Example: `src/telegram/commands/trading/buy_handler.py`.
+   - Ensure `BaseCommandHandler.execute` is async.
+
+3. **PHASE 3: INTEGRATION**
+   - Update `ControllerBot` to load these new modules dynamically or explicitly.
+   - Use `HandlerVerifier` (from Task 006) to confirm 144 commands are loaded.
+
+📝 DELIVERABLES (Push to Git):
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+- A completely reorganized `src/telegram/` directory.
+- `PLUGIN_ARCH_NOTES.md` and `MIGRATION_LOG.md`.
+- Working `controller_bot.py`.
+
+🚀 START COMMAND:
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+1. Read the TASK FILE and STRATEGY.
+2. Setup the directories.
+3. Start implementing Base classes.
+4. Implement Handlers category by category (System -> Trading -> Risk...).
+5. Wire everything in ControllerBot.
+6. Push to Git.
+
+Target Branch: `main`
+Commit Message: "TASK 007 COMPLETED: The Grand V5 Architecture Merge"
+
+═══════════════════════════════════════════════════════════════
+
+FAILURE IS NOT AN OPTION. BUILD THE PERFECT BOT. 🚀
