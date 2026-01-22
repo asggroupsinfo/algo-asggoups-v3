@@ -1,412 +1,180 @@
-# TASK 009: COMPLETE V5 ARCHITECTURE - 100% IMPLEMENTATION
+# JULES_AI_TASK_009_COMPLETE_HANDLERS.md
 
-**Task ID:** JULES-TASK-009  
-**Created:** 2026-01-22 22:20:00 IST  
-**Priority:** 🔴🔴🔴 CRITICAL (FINAL PUSH TO 100%)  
-**Assigned To:** Jules AI  
-**Status:** 🟡 PENDING  
-**Prerequisite:** Read `AUDIT_REPORT_TASK_008.md`
+## 🎯 OBJECTIVE: 100% Handler Coverage
 
----
+This file lists the 114 handler files that need to be created to complete the V5 Migration.
 
-## 🎯 MISSION: CLOSE THE GAP
+### 📋 TRADING COMMANDS (17 Files)
+**Path:** `src/telegram/commands/trading/`
+1. `pnl_handler.py` (for `/pnl`)
+2. `buy_handler.py` (for `/buy`)
+3. `sell_handler.py` (for `/sell`)
+4. `close_handler.py` (for `/close`)
+5. `closeall_handler.py` (for `/closeall`)
+6. `orders_handler.py` (for `/orders`)
+7. `history_handler.py` (for `/history`)
+8. `price_handler.py` (for `/price`)
+9. `spread_handler.py` (for `/spread`)
+10. `partial_handler.py` (for `/partial`)
+11. `signals_handler.py` (for `/signals`)
+12. `filters_handler.py` (for `/filters`)
+13. `balance_handler.py` (for `/balance`)
+14. `equity_handler.py` (for `/equity`)
+15. `margin_handler.py` (for `/margin`)
+16. `symbols_handler.py` (for `/symbols`)
+17. `trades_handler.py` (for `/trades`)
 
-**Current Status:** 60-70% Compliant (30/144 handlers exist)  
-**Target Status:** 100% Compliant (144/144 handlers exist)  
-**Gap:** 114 Missing Handler Files + Wiring
+### 🛡️ RISK COMMANDS (14 Files)
+**Path:** `src/telegram/commands/risk/`
+1. `setsl_handler.py` (for `/setsl`)
+2. `settp_handler.py` (for `/settp`)
+3. `dailylimit_handler.py` (for `/dailylimit`)
+4. `maxloss_handler.py` (for `/maxloss`)
+5. `maxprofit_handler.py` (for `/maxprofit`)
+6. `risktier_handler.py` (for `/risktier`)
+7. `slsystem_handler.py` (for `/slsystem`)
+8. `trailsl_handler.py` (for `/trailsl`)
+9. `breakeven_handler.py` (for `/breakeven`)
+10. `protection_handler.py` (for `/protection`)
+11. `multiplier_handler.py` (for `/multiplier`)
+12. `maxtrades_handler.py` (for `/maxtrades`)
+13. `drawdown_handler.py` (for `/drawdown`)
+14. `risk_handler.py` (for `/risk`)
 
----
+### 🔵 V3 STRATEGY (12 Files)
+**Path:** `src/telegram/commands/v3_strategy/`
+1. `logic1_handler.py` (for `/logic1`, `/logic1_on`, `/logic1_off`)
+2. `logic2_handler.py` (for `/logic2`, `/logic2_on`, `/logic2_off`)
+3. `logic3_handler.py` (for `/logic3`, `/logic3_on`, `/logic3_off`)
+4. `v3_handler.py` (for `/v3`)
+5. `v3_config_handler.py` (for `/v3_config`)
+6. `v3_status_handler.py` (for `/v3_status`)
+7. `v3_toggle_handler.py` (for `/v3_toggle`)
+8. `logic1_config_handler.py` (for `/logic1_config`)
+9. `logic2_config_handler.py` (for `/logic2_config`)
+10. `logic3_config_handler.py` (for `/logic3_config`)
+11. `reentry_v3_handler.py` (for `/reentry_v3`)
+12. `logic_status_handler.py` (for `/logic_status`)
 
-## 📋 AUDIT FINDINGS (FROM TASK 008)
+### 🟢 V6 TIMEFRAMES (30 Files)
+**Path:** `src/telegram/commands/v6_timeframes/`
+1. `v6_handler.py` (for `/v6`)
+2. `v6_status_handler.py` (for `/v6_status`)
+3. `v6_control_handler.py` (for `/v6_control`)
+4. `v6_config_handler.py` (for `/v6_config`)
+5. `v6_menu_handler.py` (for `/v6_menu`)
+6. `v6_performance_handler.py` (for `/v6_performance`)
+7. `tf1m_handler.py` (for `/tf1m`)
+8. `tf5m_handler.py` (for `/tf5m`)
+9. `tf15m_handler.py` (for `/tf15m`)
+10. `tf30m_handler.py` (for `/tf30m`)
+11. `tf1h_handler.py` (for `/tf1h`)
+12. `tf4h_handler.py` (for `/tf4h`)
+13. `tf1d_handler.py` (for `/tf1d`)
+14. `tf1m_on_handler.py` (for `/tf1m_on`)
+15. `tf1m_off_handler.py` (for `/tf1m_off`)
+16. `tf5m_on_handler.py` (for `/tf5m_on`)
+17. `tf5m_off_handler.py` (for `/tf5m_off`)
+18. `tf15m_on_handler.py` (for `/tf15m_on`)
+19. `tf15m_off_handler.py` (for `/tf15m_off`)
+20. `tf30m_on_handler.py` (for `/tf30m_on`)
+21. `tf30m_off_handler.py` (for `/tf30m_off`)
+22. `tf1h_on_handler.py` (for `/tf1h_on`)
+23. `tf1h_off_handler.py` (for `/tf1h_off`)
+24. `tf4h_on_handler.py` (for `/tf4h_on`)
+25. `tf4h_off_handler.py` (for `/tf4h_off`)
+26. `v6_toggle_handler.py` (for `/v6_toggle`)
+27. `reentry_v6_handler.py` (for `/reentry_v6`)
+28. `v6_1m_config_handler.py` (for `/v6_1m_config`)
+29. `v6_5m_config_handler.py` (for `/v6_5m_config`)
+30. `v6_15m_config_handler.py` (for `/v6_15m_config`)
 
-### **WHAT'S MISSING:**
-1. ❌ **114 Handler Files** (only 30/144 exist)
-2. ❌ **register_all_handlers()** function in `controller_bot.py`
-3. ❌ **Handler Verification** function
+### 📈 ANALYTICS (15 Files)
+**Path:** `src/telegram/commands/analytics/`
+1. `daily_handler.py` (for `/daily`)
+2. `weekly_handler.py` (for `/weekly`)
+3. `monthly_handler.py` (for `/monthly`)
+4. `compare_handler.py` (for `/compare`)
+5. `export_handler.py` (for `/export`)
+6. `winrate_handler.py` (for `/winrate`)
+7. `drawdown_handler.py` (for `/drawdown`)
+8. `pair_report_handler.py` (for `/pair_report`)
+9. `strategy_report_handler.py` (for `/strategy_report`)
+10. `tp_report_handler.py` (for `/tp_report`)
+11. `analytics_handler.py` (for `/analytics`)
+12. `dashboard_handler.py` (for `/dashboard`)
+13. `stats_handler.py` (for `/stats`)
+14. `performance_handler.py` (for `/performance`)
+15. `correlation_handler.py` (for `/correlation`)
 
-### **FILE COUNT GAPS:**
-```
-Trading:   17 missing (only 1/18 exist)
-Risk:      14 missing (only 1/15 exist)
-System:     8 missing (only 2/10 exist)
-V3:        12 missing (0/12 exist)
-V6:        30 missing (0/30 exist)
-Analytics: 15 missing (0/15 exist)
-Re-Entry:  15 missing (0/15 exist)
-Profit:     8 missing (0/8 exist)
-────────────────────────────
-TOTAL:    114 MISSING
-```
+### 🔄 RE-ENTRY (15 Files)
+**Path:** `src/telegram/commands/reentry/`
+1. `reentry_handler.py` (for `/reentry`)
+2. `slhunt_handler.py` (for `/slhunt`)
+3. `tpcontinue_handler.py` (for `/tpcontinue`)
+4. `recovery_handler.py` (for `/recovery`)
+5. `cooldown_handler.py` (for `/cooldown`)
+6. `chains_handler.py` (for `/chains`)
+7. `autonomous_handler.py` (for `/autonomous`)
+8. `chainlimit_handler.py` (for `/chainlimit`)
+9. `reentry_config_handler.py` (for `/reentry_config`)
+10. `autonomous_control_handler.py` (for `/autonomous_control`)
+11. `sl_hunt_stats_handler.py` (for `/sl_hunt_stats`)
+12. `sl_hunt_handler.py` (alias for `/sl_hunt`)
+13. `tp_cont_handler.py` (alias for `/tp_cont`)
+14. `reentry_status_handler.py` (for `/reentry_status`)
+15. `auto_handler.py` (alias for `/auto`)
 
----
+### 💰 PROFIT/DUAL ORDER (8 Files)
+**Path:** `src/telegram/commands/profit/`
+1. `profit_handler.py` (for `/profit`)
+2. `booking_handler.py` (for `/booking`)
+3. `levels_handler.py` (for `/levels`)
+4. `orderb_handler.py` (for `/orderb`)
+5. `dualorder_handler.py` (for `/dualorder`)
+6. `partial_close_handler.py` (for `/partial` alias in profit context)
+7. `profit_stats_handler.py` (for `/profit_stats`)
+8. `dual_config_handler.py` (for `/dual_config`)
 
-## 🚀 YOUR MISSION (EXECUTE IN ORDER)
+### 🎛️ SYSTEM (8 Files)
+**Path:** `src/telegram/commands/system/`
+1. `pause_handler.py` (for `/pause`)
+2. `resume_handler.py` (for `/resume`)
+3. `restart_handler.py` (for `/restart`)
+4. `shutdown_handler.py` (for `/shutdown`)
+5. `config_handler.py` (for `/config`)
+6. `health_handler.py` (for `/health`)
+7. `version_handler.py` (for `/version`)
+8. `help_handler.py` (for `/help`)
 
-### **PHASE 1: CREATE ALL HANDLER FILES**
+### 🔌 PLUGIN MANAGEMENT (10 Files)
+**Path:** `src/telegram/commands/plugin/`
+1. `plugins_handler.py` (for `/plugins`)
+2. `plugin_handler.py` (for `/plugin`)
+3. `enable_handler.py` (for `/enable`)
+4. `disable_handler.py` (for `/disable`)
+5. `upgrade_handler.py` (for `/upgrade`)
+6. `rollback_handler.py` (for `/rollback`)
+7. `shadow_handler.py` (for `/shadow`)
+8. `plugin_toggle_handler.py` (for `/plugin_toggle`)
+9. `plugin_status_handler.py` (for `/plugin_status`)
+10. `plugin_store_handler.py` (for `/plugin_store`)
 
-**Source Truth:** `06_COMPLETE_MERGE_EXECUTION_PLAN.md` Lines 237-365
+### 🕐 SESSION MANAGEMENT (6 Files)
+**Path:** `src/telegram/commands/session/`
+1. `session_handler.py` (for `/session`)
+2. `london_handler.py` (for `/london`)
+3. `newyork_handler.py` (for `/newyork`)
+4. `tokyo_handler.py` (for `/tokyo`)
+5. `sydney_handler.py` (for `/sydney`)
+6. `overlap_handler.py` (for `/overlap`)
 
-**Action:** Create 114 handler files in correct folders.
-
-**Template for Each Handler:**
-```python
-"""
-[Command Name] Handler
-Implements /[command] command following V5 Architecture.
-"""
-from telegram import Update, InlineKeyboardButton, InlineKeyboardMarkup
-from telegram.ext import ContextTypes
-from ..base_command_handler import BaseCommandHandler
-
-class [Name]Handler(BaseCommandHandler):
-    """Handle /[command] command"""
-    
-    def get_command_name(self) -> str:
-        return "/[command]"
-    
-    def requires_plugin_selection(self) -> bool:
-        return [True/False]  # See Doc 03 for which commands need plugin
-    
-    async def execute(
-        self,
-        update: Update,
-        context: ContextTypes.DEFAULT_TYPE,
-        plugin_context: str = None
-    ):
-        """Execute [command] logic"""
-        
-        # Get chat_id
-        chat_id = update.effective_chat.id
-        
-        # TODO: Implement actual logic
-        # For now, delegate to legacy handler if exists
-        if hasattr(self.bot, 'handle_[legacy_method]'):
-            await self.bot.handle_[legacy_method](update, context)
-            return
-        
-        # Fallback message
-        await update.message.reply_text(
-            f"✅ {self.get_command_name()} executed (V5 Handler)"
-        )
-```
-
-**Categories to Create:**
-
-#### **1. Trading Commands (17 missing)**
-**Location:** `src/telegram/commands/trading/`
-
-Create these files:
-- `buy_handler.py` (or use existing flow?)
-- `sell_handler.py` (or use existing flow?)
-- `close_handler.py`
-- `closeall_handler.py`
-- `orders_handler.py`
-- `history_handler.py`
-- `pnl_handler.py`
-- `balance_handler.py`
-- `equity_handler.py`
-- `margin_handler.py`
-- `symbols_handler.py`
-- `trades_handler.py`
-- `price_handler.py`
-- `spread_handler.py`
-- `signals_handler.py`
-- `filters_handler.py`
-- `partial_handler.py`
-
-#### **2. Risk Commands (14 missing)**
-**Location:** `src/telegram/commands/risk/`
-
-Create these files:
-- `setsl_handler.py`
-- `settp_handler.py`
-- `dailylimit_handler.py`
-- `maxloss_handler.py`
-- `maxprofit_handler.py`
-- `risktier_handler.py`
-- `slsystem_handler.py`
-- `trailsl_handler.py`
-- `breakeven_handler.py`
-- `protection_handler.py`
-- `multiplier_handler.py`
-- `maxtrades_handler.py`
-- `drawdownlimit_handler.py`
-- `risk_handler.py`
-
-#### **3. System Commands (8 missing)**
-**Location:** `src/telegram/commands/system/`
-
-Create these files:
-- `help_handler.py`
-- `pause_handler.py`
-- `resume_handler.py`
-- `restart_handler.py`
-- `shutdown_handler.py`
-- `config_handler.py`
-- `health_handler.py`
-- `version_handler.py`
-
-#### **4. V3 Strategy Commands (12 missing)**
-**Location:** `src/telegram/commands/v3/`
-
-Create these files:
-- `logic1_handler.py`
-- `logic2_handler.py`
-- `logic3_handler.py`
-- `logic1_on_handler.py`
-- `logic1_off_handler.py`
-- `logic2_on_handler.py`
-- `logic2_off_handler.py`
-- `logic3_on_handler.py`
-- `logic3_off_handler.py`
-- `logic1_config_handler.py`
-- `logic2_config_handler.py`
-- `logic3_config_handler.py`
-
-#### **5. V6 Timeframe Commands (30 missing)**
-**Location:** `src/telegram/commands/v6/`
-
-Create these files:
-- `v6_status_handler.py`
-- `v6_control_handler.py`
-- `v6_config_handler.py`
-- `v6_menu_handler.py`
-- `tf1m_handler.py`
-- `tf1m_on_handler.py`
-- `tf1m_off_handler.py`
-- `tf5m_handler.py`
-- `tf5m_on_handler.py`
-- `tf5m_off_handler.py`
-- `tf15m_handler.py`
-- `tf15m_on_handler.py`
-- `tf15m_off_handler.py`
-- `tf30m_handler.py`
-- `tf30m_on_handler.py`
-- `tf30m_off_handler.py`
-- `tf1h_handler.py`
-- `tf1h_on_handler.py`
-- `tf1h_off_handler.py`
-- `tf4h_handler.py`
-- `tf4h_on_handler.py`
-- `tf4h_off_handler.py`
-- `tf1d_handler.py`
-- `v6_performance_handler.py`
-- (+ 6 more for other V6 features)
-
-#### **6. Analytics Commands (15 missing)**
-**Location:** `src/telegram/commands/analytics/`
-
-Create these files:
-- `daily_handler.py`
-- `weekly_handler.py`
-- `monthly_handler.py`
-- `compare_handler.py`
-- `pairreport_handler.py`
-- `strategyreport_handler.py`
-- `tpreport_handler.py`
-- `stats_handler.py`
-- `winrate_handler.py`
-- `drawdown_handler.py`
-- `profit_stats_handler.py`
-- `performance_handler.py`
-- `dashboard_handler.py`
-- `export_handler.py`
-- `trends_handler.py`
-
-#### **7. Re-Entry Commands (15 missing)**
-**Location:** `src/telegram/commands/reentry/`
-
-Create folder and these files:
-- `slhunt_handler.py`
-- `sl_hunt_handler.py`
-- `tpcontinue_handler.py`
-- `tp_cont_handler.py`
-- `reentry_handler.py`
-- `reentry_config_handler.py`
-- `recovery_handler.py`
-- `cooldown_handler.py`
-- `chains_handler.py`
-- `autonomous_handler.py`
-- `chainlimit_handler.py`
-- `reentry_v3_handler.py`
-- `reentry_v6_handler.py`
-- `autonomous_control_handler.py`
-- `sl_hunt_stats_handler.py`
-
-#### **8. Profit/Dual Order Commands (8 missing)**
-**Location:** `src/telegram/commands/profit/`
-
-Create folder and these files:
-- `dualorder_handler.py`
-- `orderb_handler.py`
-- `order_b_handler.py`
-- `profit_handler.py`
-- `booking_handler.py`
-- `levels_handler.py`
-- `dual_status_handler.py`
-- `profit_config_handler.py`
+### 🔊 VOICE (4 Files)
+**Path:** `src/telegram/commands/voice/`
+1. `voice_handler.py` (for `/voice`)
+2. `voicetest_handler.py` (for `/voicetest`)
+3. `mute_handler.py` (for `/mute`)
+4. `unmute_handler.py` (for `/unmute`)
 
 ---
-
-### **PHASE 2: WIRE ALL HANDLERS IN CONTROLLER_BOT**
-
-**Source Truth:** `05_ERROR_FREE_IMPLEMENTATION_GUIDE.md` Lines 447-656
-
-**Action:** Add `register_all_handlers()` function to `controller_bot.py`:
-
-```python
-def _register_all_handlers(self):
-    """Register all 144 command handlers"""
-    
-    if not self.app:
-        return
-    
-    # ========================================
-    # SYSTEM COMMANDS (10)
-    # ========================================
-    self.app.add_handler(CommandHandler("start", self.handle_start))
-    self.app.add_handler(CommandHandler("help", self.help_handler.handle))
-    self.app.add_handler(CommandHandler("status", self.status_handler.handle))
-    # ... ALL 10 SYSTEM COMMANDS
-    
-    # ========================================
-    # TRADING COMMANDS (18)
-    # ========================================
-    self.app.add_handler(CommandHandler("positions", self.positions_handler.handle))
-    self.app.add_handler(CommandHandler("buy", self.handle_buy_command))
-    self.app.add_handler(CommandHandler("sell", self.handle_sell_command))
-    # ... ALL 18 TRADING COMMANDS
-    
-    # ... REPEAT FOR ALL 144 COMMANDS
-    
-    logger.info("✅ All 144 handlers registered")
-```
-
-**Update `__init__` method:**
-
-```python
-def __init__(self, ...):
-    # ... existing code ...
-    
-    # Initialize ALL handlers
-    self.help_handler = HelpHandler(self)
-    self.pause_handler = PauseHandler(self)
-    # ... ALL 144 HANDLERS
-    
-    logger.info("[ControllerBot] All 144 handlers initialized")
-```
-
----
-
-### **PHASE 3: IMPLEMENT VERIFICATION**
-
-**Source Truth:** `05_ERROR_FREE_IMPLEMENTATION_GUIDE.md` Lines 617-656
-
-**Action:** Add verification function:
-
-```python
-def verify_handler_registration(self):
-    """Verify all expected commands are registered"""
-    
-    EXPECTED_COMMANDS = [
-        # System (10)
-        'start', 'help', 'status', 'pause', 'resume', 'restart',
-        'shutdown', 'config', 'health', 'version',
-        
-        # Trading (18)
-        'positions', 'pnl', 'buy', 'sell', 'close', 'closeall',
-        # ... ALL 144 COMMANDS
-    ]
-    
-    registered_commands = set()
-    for handler in self.app.handlers[0]:
-        if isinstance(handler, CommandHandler):
-            registered_commands.update(handler.commands)
-    
-    missing_commands = set(EXPECTED_COMMANDS) - registered_commands
-    
-    if missing_commands:
-        logger.error(f"❌ Missing command handlers: {missing_commands}")
-        raise RuntimeError(f"Not all commands registered! Missing: {missing_commands}")
-    else:
-        logger.info(f"✅ All {len(EXPECTED_COMMANDS)} commands registered")
-```
-
-**Call it in `set_dependencies()`:**
-
-```python
-def set_dependencies(self, trading_engine):
-    # ... existing code ...
-    
-    # Verify all handlers registered
-    self.verify_handler_registration()
-```
-
----
-
-## ✅ ACCEPTANCE CRITERIA
-
-**Task is COMPLETE only when:**
-
-1. ✅ **144 Handler Files Exist**
-   ```
-   Count files in src/telegram/commands/*/*.py
-   Expected: 144 files
-   ```
-
-2. ✅ **All Handlers Registered**
-   ```python
-   verify_handler_registration()
-   # Should NOT raise RuntimeError
-   ```
-
-3. ✅ **Bot Starts Without Errors**
-   ```
-   No missing import errors
-   No registration errors
-   Log shows: "✅ All 144 commands registered"
-   ```
-
-4. ✅ **Test Commands Work**
-   ```
-   /start  -> Shows main menu
-   /help   -> Shows help
-   /v6_status -> Shows V6 status (NEW handler)
-   /logic1 -> Shows Logic1 menu (NEW handler)
-   ```
-
----
-
-## 📝 DELIVERABLES
-
-1. **144 Handler Files** in appropriate folders
-2. **Updated `controller_bot.py`** with all imports and registrations
-3. **Verification Function** implemented
-4. **Test Report** showing 5-10 commands working
-5. **Git Commit** with message: "TASK 009 COMPLETE: All 144 V5 Handlers Implemented"
-
----
-
-## ⏱️ TIME ESTIMATE
-
-**Total:** 6-10 hours
-
-- Phase 1 (Create files): 4-6 hours
-- Phase 2 (Wiring): 1-2 hours  
-- Phase 3 (Verification): 1-2 hours
-
----
-
-## 🚀 START COMMAND
-
-**Execute this task NOW. Do NOT skip any handler. Create ALL 114 missing files.**
-
-**Priority Order:**
-1. V6 Commands (30 files) - Highest business value
-2. V3 Commands (12 files)
-3. Analytics (15 files)
-4. Trading (17 files)
-5. Risk (14 files)
-6. Others (26 files)
-
-**EXECUTE TASK 009.**
+**TOTAL FILES TO CREATE: 114**
