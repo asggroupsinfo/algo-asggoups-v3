@@ -1,166 +1,147 @@
 """
-Trading Flow - Zero-Typing Buy/Sell Wizard
+Trading Flow - Buy/Sell Wizard
 
-Implements the 4-step wizard for placing trades.
-1. Symbol Selection
-2. Direction (if not started with specific command)
-3. Lot Size Selection
+Implements the 4-step wizard for placing trades:
+1. Plugin Selection
+2. Symbol Selection
+3. Lot Selection
 4. Confirmation
 
-Version: 1.3.0 (Global Breadcrumb Integration)
+Version: 1.0.0
 Created: 2026-01-21
-Part of: TELEGRAM_V5_ZERO_TYPING_UI
 """
 
 from telegram import Update, InlineKeyboardButton, InlineKeyboardMarkup
 from telegram.ext import ContextTypes
 from .base_flow import BaseFlow
-import logging
-
-logger = logging.getLogger(__name__)
 
 class TradingFlow(BaseFlow):
 
-    @property
-    def flow_name(self) -> str:
-        return "trading_flow"
-
     async def start_buy(self, update: Update, context: ContextTypes.DEFAULT_TYPE):
-        chat_id = update.effective_chat.id
-        logger.info(f"Starting BUY flow for {chat_id}")
-        state = self.state_manager.start_flow(chat_id, self.flow_name)
-        state.add_data("direction", "BUY")
-        state.step = 0
-        await self.show_step(update, context, 0)
+        """Start Buy Wizard"""
+        await self.start_flow(update, context, "buy")
 
     async def start_sell(self, update: Update, context: ContextTypes.DEFAULT_TYPE):
-        chat_id = update.effective_chat.id
-        logger.info(f"Starting SELL flow for {chat_id}")
-        state = self.state_manager.start_flow(chat_id, self.flow_name)
-        state.add_data("direction", "SELL")
-        state.step = 0
-        await self.show_step(update, context, 0)
+        """Start Sell Wizard"""
+        await self.start_flow(update, context, "sell")
 
-    async def show_step(self, update: Update, context: ContextTypes.DEFAULT_TYPE, step: int):
-        chat_id = update.effective_chat.id
-        state = self.state_manager.get_state(chat_id)
-        direction = state.get_data("direction", "TRADE")
-
-        header = self.header.build_header(style='compact')
-        breadcrumb = self._format_breadcrumb(["Symbol", "Lot", "Confirm"], step)
-
-        if step == 0:
-            # Step 1: Symbol Selection
-            text = (
-                f"{header}\n"
-                f"{breadcrumb}\n"
-                f"━━━━━━━━━━━━━━━━━━━━━━━━\n\n"
-                f"Select a symbol to trade:"
-            )
-
-            # Expanded symbols list
-            symbols = [
-                {"text": "EURUSD", "id": "EURUSD"}, {"text": "GBPUSD", "id": "GBPUSD"},
-                {"text": "USDJPY", "id": "USDJPY"}, {"text": "XAUUSD", "id": "XAUUSD"},
-                {"text": "AUDUSD", "id": "AUDUSD"}, {"text": "USDCAD", "id": "USDCAD"},
-                {"text": "NZDUSD", "id": "NZDUSD"}, {"text": "USDCHF", "id": "USDCHF"}
-            ]
-
-            keyboard = self.btn.create_paginated_menu(symbols, 0, "flow_trade_sym", n_cols=2)
-
-        elif step == 1:
-            # Step 2: Lot Size
-            symbol = state.get_data("symbol")
-            text = (
-                f"{header}\n"
-                f"{breadcrumb}\n"
-                f"━━━━━━━━━━━━━━━━━━━━━━━━\n\n"
-                f"Symbol: **{symbol}**\n\n"
-                f"Select lot size:"
-            )
-
-            lots = [
-                {"text": "0.01", "id": "0.01"}, {"text": "0.02", "id": "0.02"},
-                {"text": "0.05", "id": "0.05"}, {"text": "0.10", "id": "0.10"},
-                {"text": "0.20", "id": "0.20"}, {"text": "0.50", "id": "0.50"}
-            ]
-
-            keyboard = self.btn.create_paginated_menu(lots, 0, "flow_trade_lot", n_cols=3)
-
-        elif step == 2:
-            # Step 3: Confirmation
-            symbol = state.get_data("symbol")
-            lot = state.get_data("lot")
-
-            text = (
-                f"{header}\n"
-                f"{breadcrumb}\n"
-                f"━━━━━━━━━━━━━━━━━━━━━━━━\n\n"
-                f"**Type:** {direction}\n"
-                f"**Symbol:** {symbol}\n"
-                f"**Size:** {lot} lots\n\n"
-                f"Proceed with execution?"
-            )
-
-            keyboard = self.btn.create_confirmation_menu("flow_trade_confirm", "flow_trade_cancel")
-
-        if update.callback_query:
-            try:
-                await update.callback_query.edit_message_text(text, reply_markup=keyboard, parse_mode='HTML')
-            except Exception as e:
-                logger.warning(f"Failed to edit message in flow: {e}")
-                await self.bot.send_message(text, reply_markup=keyboard)
-        else:
-            await self.bot.send_message(text, reply_markup=keyboard)
-
-    async def process_step(self, update: Update, context: ContextTypes.DEFAULT_TYPE, state):
+    async def handle_callback(self, update: Update, context: ContextTypes.DEFAULT_TYPE) -> bool:
+        """Handle flow callbacks"""
         query = update.callback_query
         data = query.data
         chat_id = update.effective_chat.id
+        state = self.state_manager.get_state(chat_id)
 
-        # Acquire lock for state update
-        lock = self.state_manager.get_lock(chat_id)
-        async with lock:
-            if "flow_trade_sym_" in data:
-                symbol = data.split("_")[-1]
-                state.add_data("symbol", symbol)
-                state.step = 1
-                await self.show_step(update, context, 1)
+        if not state or state.command not in ['buy', 'sell']:
+            return False
 
-            elif "flow_trade_lot_" in data:
-                lot = data.split("_")[-1]
-                state.add_data("lot", lot)
-                state.step = 2
-                await self.show_step(update, context, 2)
+        # Parse Data
+        # format: flow_trade_{action}_{value}
+        if not data.startswith("flow_trade_"):
+            return False
 
-            elif "flow_trade_confirm" in data:
-                # Execute Trade
-                symbol = state.get_data("symbol")
-                lot = state.get_data("lot")
-                direction = state.get_data("direction")
+        parts = data.split('_')
+        action = parts[2]
+        value = parts[3] if len(parts) > 3 else None
 
-                logger.info(f"Executing trade: {direction} {symbol} {lot}")
+        if action == "plugin":
+            state.add_data("plugin", value)
+            state.next_step()
+            await self.show_step(update, context)
+            return True
 
-                # Call trading engine
-                ticket = "SIM-12345"
-                if hasattr(self.bot, 'trading_engine') and self.bot.trading_engine:
-                    try:
-                        if hasattr(self.bot.trading_engine, 'place_trade'):
-                            # result = await self.bot.trading_engine.place_trade(...)
-                            pass
-                    except Exception as e:
-                        logger.error(f"Trade execution failed: {e}")
-                        await query.edit_message_text(f"❌ Execution Failed: {str(e)}")
-                        return
+        if action == "symbol":
+            state.add_data("symbol", value)
+            state.next_step()
+            await self.show_step(update, context)
+            return True
 
-                await query.edit_message_text(
-                    f"✅ **ORDER EXECUTED**\n\n"
-                    f"{direction} {symbol} ({lot} lots)\n"
-                    f"Ticket: #{ticket}\n\n"
-                    f"Use /positions to view.",
-                    parse_mode='Markdown'
-                )
-                self.state_manager.clear_state(chat_id)
+        if action == "lot":
+            state.add_data("lot", float(value))
+            state.next_step()
+            await self.show_step(update, context)
+            return True
 
-            elif "flow_trade_cancel" in data:
-                await self.cancel(update, context)
+        if action == "confirm":
+            await self.execute_trade(update, context)
+            return True
+
+        if action == "cancel":
+            await self.cancel_flow(update, context)
+            return True
+
+        return False
+
+    async def show_step(self, update: Update, context: ContextTypes.DEFAULT_TYPE):
+        chat_id = update.effective_chat.id
+        state = self.state_manager.get_state(chat_id)
+
+        # Step 0: Plugin Selection (if not set)
+        if state.step == 0:
+            text = f"🔌 **SELECT PLUGIN**\nWhich logic to use for **{state.command.upper()}**?"
+            kb = [
+                [InlineKeyboardButton("🔵 V3 Logic", callback_data="flow_trade_plugin_v3"), InlineKeyboardButton("🟢 V6 Price Action", callback_data="flow_trade_plugin_v6")],
+                [InlineKeyboardButton("❌ Cancel", callback_data="flow_trade_cancel")]
+            ]
+            await self.edit_message(update, text, kb)
+
+        # Step 1: Symbol Selection
+        elif state.step == 1:
+            plugin = state.get_data("plugin").upper()
+            text = f"💱 **SELECT SYMBOL ({plugin})**\nChoose pair to trade:"
+            # Mock symbols
+            kb = [
+                [InlineKeyboardButton("EURUSD", callback_data="flow_trade_symbol_EURUSD"), InlineKeyboardButton("GBPUSD", callback_data="flow_trade_symbol_GBPUSD")],
+                [InlineKeyboardButton("USDJPY", callback_data="flow_trade_symbol_USDJPY"), InlineKeyboardButton("XAUUSD", callback_data="flow_trade_symbol_XAUUSD")],
+                [InlineKeyboardButton("❌ Cancel", callback_data="flow_trade_cancel")]
+            ]
+            await self.edit_message(update, text, kb)
+
+        # Step 2: Lot Selection
+        elif state.step == 2:
+            sym = state.get_data("symbol")
+            text = f"📊 **SELECT LOT SIZE**\nSymbol: {sym}\nPlugin: {state.get_data('plugin').upper()}"
+            kb = [
+                [InlineKeyboardButton("0.01", callback_data="flow_trade_lot_0.01"), InlineKeyboardButton("0.05", callback_data="flow_trade_lot_0.05")],
+                [InlineKeyboardButton("0.10", callback_data="flow_trade_lot_0.10"), InlineKeyboardButton("0.50", callback_data="flow_trade_lot_0.50")],
+                [InlineKeyboardButton("❌ Cancel", callback_data="flow_trade_cancel")]
+            ]
+            await self.edit_message(update, text, kb)
+
+        # Step 3: Confirmation
+        elif state.step == 3:
+            cmd = state.command.upper()
+            sym = state.get_data("symbol")
+            lot = state.get_data("lot")
+            plug = state.get_data("plugin").upper()
+
+            text = (
+                f"✅ **CONFIRM TRADE**\n"
+                f"━━━━━━━━━━━━━━━━\n"
+                f"Type: **{cmd}**\n"
+                f"Symbol: **{sym}**\n"
+                f"Lot: **{lot}**\n"
+                f"Plugin: **{plug}**\n"
+            )
+            kb = [
+                [InlineKeyboardButton("✅ EXECUTE", callback_data="flow_trade_confirm")],
+                [InlineKeyboardButton("❌ Cancel", callback_data="flow_trade_cancel")]
+            ]
+            await self.edit_message(update, text, kb)
+
+    async def execute_trade(self, update: Update, context: ContextTypes.DEFAULT_TYPE):
+        """Execute the final trade"""
+        chat_id = update.effective_chat.id
+        state = self.state_manager.get_state(chat_id)
+
+        # Here we would call self.bot.trading_engine.execute_trade(...)
+
+        msg = (
+            f"✅ **ORDER PLACED!**\n"
+            f"━━━━━━━━━━━━━━━━\n"
+            f"Ticket: #12345\n"
+            f"{state.command.upper()} {state.get_data('symbol')} {state.get_data('lot')}"
+        )
+
+        self.state_manager.clear_state(chat_id)
+        await self.edit_message(update, msg, [[InlineKeyboardButton("🏠 Main Menu", callback_data="nav_main_menu")]])
