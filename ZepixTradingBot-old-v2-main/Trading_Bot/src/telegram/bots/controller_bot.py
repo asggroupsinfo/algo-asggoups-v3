@@ -703,8 +703,8 @@ class ControllerBot(BaseIndependentBot):
         await update.message.reply_text("Use /start to open the main menu.")
 
     async def handle_status(self, update: Update, context: ContextTypes.DEFAULT_TYPE):
-        uptime = datetime.now() - self.startup_time
-        await update.message.reply_text(f"🟢 Active (Uptime: {str(uptime).split('.')[0]})")
+        """Handle /status command (Delegated to StatusHandler)"""
+        await self.status_handler.handle(update, context)
 
     async def handle_settings(self, update: Update, context: ContextTypes.DEFAULT_TYPE):
         await update.message.reply_text("Settings are now in the Main Menu > Settings.")
