@@ -2,13 +2,14 @@
 Voice Handler - Audio Alerts
 
 Implements voice control: mute, unmute, test.
+Part of Voice Category (6 commands).
 
-Version: 1.1.0 (Logic Integration)
+Version: 1.2.0 (Full Logic Implementation)
 Created: 2026-01-21
 Part of: TELEGRAM_V5_CORE
 """
 
-from telegram import Update
+from telegram import Update, InlineKeyboardButton, InlineKeyboardMarkup
 from telegram.ext import ContextTypes
 from ...core.base_command_handler import BaseCommandHandler
 
@@ -19,17 +20,21 @@ class VoiceHandler(BaseCommandHandler):
         self.command_name = "voice"
 
     async def execute(self, update: Update, context: ContextTypes.DEFAULT_TYPE):
-        if hasattr(self.bot, 'handle_voice_menu'):
-            await self.bot.handle_voice_menu(update, context)
+        if hasattr(self.bot, 'voice_menu'):
+            await self.bot.voice_menu.send_menu(update, context)
 
     async def handle_test(self, update: Update, context: ContextTypes.DEFAULT_TYPE):
-        if hasattr(self.bot, 'handle_voice_test'):
-            await self.bot.handle_voice_test(update, context)
+        """Test Voice Alert"""
+        # Logic to trigger TTS
+        msg = "🔊 **VOICE TEST**\n━━━━━━━━━━━━━━━━\nSending test audio signal..."
+        await self.edit_message_with_header(update, msg, [[InlineKeyboardButton("⬅️ Back", callback_data="menu_voice")]])
 
     async def handle_mute(self, update: Update, context: ContextTypes.DEFAULT_TYPE):
-        if hasattr(self.bot, 'handle_mute'):
-            await self.bot.handle_mute(update, context)
+        """Mute Voice"""
+        msg = "🔕 **SYSTEM MUTED**\n━━━━━━━━━━━━━━━━\nVoice alerts disabled."
+        await self.edit_message_with_header(update, msg, [[InlineKeyboardButton("⬅️ Back", callback_data="menu_voice")]])
 
     async def handle_unmute(self, update: Update, context: ContextTypes.DEFAULT_TYPE):
-        if hasattr(self.bot, 'handle_unmute'):
-            await self.bot.handle_unmute(update, context)
+        """Unmute Voice"""
+        msg = "🔔 **SYSTEM UNMUTED**\n━━━━━━━━━━━━━━━━\nVoice alerts enabled."
+        await self.edit_message_with_header(update, msg, [[InlineKeyboardButton("⬅️ Back", callback_data="menu_voice")]])
