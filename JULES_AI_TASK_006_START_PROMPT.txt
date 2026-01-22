@@ -1,0 +1,85 @@
+═══════════════════════════════════════════════════════════════
+🤖 JULES AI - TASK 006 ASSIGNMENT
+═══════════════════════════════════════════════════════════════
+
+Hello Jules AI!
+
+**NEW CRITICAL TASK ASSIGNED**
+
+📋 TASK DETAILS:
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+Task ID: JULES-TASK-006
+Task: Error-Free Implementation & Hardening
+Priority: 🔴 CRITICAL
+Estimated Time: 4-6 hours
+
+🎯 YOUR MISSION:
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+Inject **ROBUSTNESS** into the bot. Prevent common crashes, timeouts, and race conditions.
+✅ Implement Global Callback Safety (Always answer query)
+✅ Implement State Locking (Asyncio locks)
+✅ Implement Safe Message Editing (Catch API errors)
+✅ Create Handler Verifier (Ensure 144 commands exist)
+
+📂 KEY DOCUMENTS:
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+1. TASK FILE (READ FIRST):
+   JULES_AI_TASK_006_ERROR_HANDLING.md
+
+2. PLANNING DOCUMENT (SPECIFICATION):
+   ZepixTradingBot-old-v2-main/Updates/V5 COMMAND TELEGRAM/05_ERROR_FREE_IMPLEMENTATION_GUIDE.md
+   └─ 906 lines of safety patterns
+
+🚨 CRITICAL REQUIREMENTS:
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+⚠️  NO SPINNER DEATH:
+   - Every callback handler MUST call `query.answer()` immediately.
+   - Implement a wrapper or middleware to enforce this.
+
+⚠️  RACE CONDITION PROTECTION:
+   - Use `asyncio.Lock` in `ConversationStateManager`.
+   - Prevent User A from clicking "Next" twice instantly.
+
+⚠️  STARTUP CHECK:
+   - Scan all handlers on startup.
+   - If `/positions` is missing -> CRASH IMMEDIATELY (Fail Fast).
+   - Log missing commands clearly.
+
+📝 DELIVERABLES (Push to Git):
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+1. Code in `src/telegram/core/`:
+   - `callback_safety_manager.py` (New Middleware)
+   - `handler_verifier.py` (Startup Check)
+
+2. Code in `src/telegram/utils/`:
+   - `message_utils.py` (Safe Edits)
+
+3. Updates:
+   - `conversation_state_manager.py` (Add Locking)
+   - `controller_bot.py` (Use new safety tools)
+
+4. Documentation:
+   - `ERROR_HANDLING_NOTES.md`
+
+🚀 START COMMAND:
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+1. Read JULES_AI_TASK_006_ERROR_HANDLING.md
+2. Create `CallbackSafetyManager` first
+3. Update `ConversationStateManager` with locks
+4. Create `SafeMessageEditor`
+5. Create `HandlerVerifier`
+6. Integrate & Test
+7. Push to Git
+
+Target Branch: `main`
+Commit Message: "TASK 006 COMPLETE: Error-Free Hardening & Verification"
+
+═══════════════════════════════════════════════════════════════
+
+Ready to BULLETPROOF the bot! 🚀
