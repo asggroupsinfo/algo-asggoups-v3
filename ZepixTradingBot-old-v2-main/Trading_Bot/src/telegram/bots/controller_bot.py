@@ -30,6 +30,9 @@ from src.telegram.interceptors.command_interceptor import CommandInterceptor
 from src.telegram.interceptors.plugin_context_manager import PluginContextManager
 # from src.telegram.core.header_manager import HeaderManager
 from src.telegram.core.command_registry import CommandRegistry
+from src.telegram.core.callback_safety_manager import CallbackSafetyManager
+from src.telegram.core.handler_verifier import HandlerVerifier
+from src.telegram.utils.message_utils import safe_edit_message
 
 # Import All Menus
 from src.telegram.menus.main_menu import MainMenu
@@ -89,6 +92,7 @@ class ControllerBot(BaseIndependentBot):
         self.state_manager = state_manager
         self.header_refresh_manager = HeaderRefreshManager(self) # Updated Class
         self.command_registry = CommandRegistry(self) # Phase 5
+        self.safety_manager = CallbackSafetyManager()
 
         # --- Plugin Selection System (Phase 3) ---
         self.command_interceptor = CommandInterceptor(self)
@@ -228,7 +232,11 @@ class ControllerBot(BaseIndependentBot):
         await self.main_menu.send_menu(update, context)
 
     async def handle_callback(self, update: Update, context: ContextTypes.DEFAULT_TYPE):
-        """Handle all callback queries via Router"""
+        """Handle all callback queries via Router (Wrapped for Safety)"""
+        await self.safety_manager.wrap_callback(self._inner_handle_callback, update, context)
+
+    async def _inner_handle_callback(self, update: Update, context: ContextTypes.DEFAULT_TYPE):
+        """Internal callback logic"""
         query = update.callback_query
         data = query.data
         logger.info(f"[ControllerBot] Callback: {data}")
@@ -238,7 +246,7 @@ class ControllerBot(BaseIndependentBot):
             result = await self.command_interceptor.handle_selection(update, context)
             if result:
                 plugin_name = result['plugin'].upper()
-                await query.edit_message_text(f"✅ Context set to **{plugin_name}**\n\nPlease retry your command.", parse_mode='Markdown')
+                await safe_edit_message(update, f"✅ Context set to **{plugin_name}**\n\nPlease retry your command.")
             return
 
         # 2. Check for Active Flows (Doc 4 Priority)
@@ -252,12 +260,6 @@ class ControllerBot(BaseIndependentBot):
         # 3. Try V5 Router
         if await self.callback_router.handle_callback(update, context):
             return
-
-        # 4. Fallback to Legacy Handlers
-        try:
-            await query.answer()
-        except:
-            pass
 
         if data == "dashboard":
             await self.handle_dashboard(update, context)
@@ -273,7 +275,7 @@ class ControllerBot(BaseIndependentBot):
             await self._handle_v6_callback(update, context)
 
         else:
-            await query.edit_message_text(f"❓ Unknown option: {data}")
+            await safe_edit_message(update, f"❓ Unknown option: {data}")
 
     # =========================================================================
     # ACTION HANDLERS (Called by Router/Commands)
@@ -622,23 +624,16 @@ class ControllerBot(BaseIndependentBot):
 
         full_text = f"{header}\n{text}"
 
-        try:
-            # Check if reply_markup is a list (from ButtonBuilder) or Markup object
-            if isinstance(reply_markup, list):
-                 reply_markup = InlineKeyboardMarkup(reply_markup)
+        # Check if reply_markup is a list (from ButtonBuilder) or Markup object
+        if isinstance(reply_markup, list):
+             reply_markup = InlineKeyboardMarkup(reply_markup)
 
-            await query.edit_message_text(
-                text=full_text,
-                reply_markup=reply_markup,
-                parse_mode="HTML"
-            )
-            # Register for refresh
-            if self.header_refresh_manager:
-                self.header_refresh_manager.register_message(update.effective_chat.id, query.message.message_id)
-        except Exception as e:
-            logger.error(f"[ControllerBot] Edit Error: {e}")
-            if "message is not modified" not in str(e):
-                await self.send_message(full_text, reply_markup=reply_markup)
+        # Use safe utility
+        await safe_edit_message(update, full_text, reply_markup, parse_mode="HTML")
+
+        # Register for refresh
+        if self.header_refresh_manager and query:
+            self.header_refresh_manager.register_message(update.effective_chat.id, query.message.message_id)
 
     def _get_risk_usage(self) -> str:
         """Helper to get risk usage for header"""
