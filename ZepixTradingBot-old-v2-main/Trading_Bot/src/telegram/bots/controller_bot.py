@@ -22,11 +22,13 @@ from telegram.ext import ContextTypes, CommandHandler, CallbackQueryHandler
 
 from .base_bot import BaseIndependentBot
 from src.telegram.core.callback_router import CallbackRouter
-from src.telegram.core.sticky_header_builder import StickyHeaderBuilder
+# from src.telegram.core.sticky_header_builder import StickyHeaderBuilder
+from src.telegram.headers.sticky_header_builder import StickyHeaderBuilder # Updated to Headers Package
+from src.telegram.headers.header_refresh_manager import HeaderRefreshManager # Updated to Headers Package
 from src.telegram.core.conversation_state_manager import state_manager
 from src.telegram.core.plugin_interceptor import CommandInterceptor
 from src.telegram.interceptors.plugin_context_manager import PluginContextManager
-from src.telegram.core.header_manager import HeaderManager
+# from src.telegram.core.header_manager import HeaderManager
 from src.telegram.core.command_registry import CommandRegistry
 
 # Import All Menus
@@ -85,7 +87,7 @@ class ControllerBot(BaseIndependentBot):
         self.sticky_header = StickyHeaderBuilder()
         self.callback_router = CallbackRouter(self)
         self.state_manager = state_manager
-        self.header_refresh_manager = HeaderManager(self) # Phase 4
+        self.header_refresh_manager = HeaderRefreshManager(self) # Updated Class
         self.command_registry = CommandRegistry(self) # Phase 5
 
         # --- Plugin Selection System (Phase 3) ---
