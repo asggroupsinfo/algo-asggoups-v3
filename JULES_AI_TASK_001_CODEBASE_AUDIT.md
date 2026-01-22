@@ -365,8 +365,59 @@ EXCLUDE:
 2. **Execute:** Perform audit as per phases
 3. **Document:** Create all 5 reports
 4. **Verify:** Self-review all findings
-5. **Commit:** Push all reports to Git
-6. **Notify:** Update this file with completion status
+5. **Commit & Push:** Commit all reports and push to main branch
+6. **Notify:** Update this task file with completion status
+
+---
+
+## 🚨 MANDATORY GIT WORKFLOW RULES (CRITICAL!)
+
+### **⚠️ GLOBAL REQUIREMENT - MUST FOLLOW**
+
+**After completing ALL 5 reports, you MUST:**
+
+1. **Stage All Report Files:**
+```bash
+git add 01_PROJECT_UNDERSTANDING.md
+git add 02_CODE_QUALITY_REPORT.md
+git add 03_PRODUCTION_READINESS_REPORT.md
+git add 04_FEATURE_VERIFICATION_MATRIX.md
+git add 05_MASTER_AUDIT_REPORT.md
+```
+
+2. **Commit with Descriptive Message:**
+```bash
+git commit -m "TASK 001 COMPLETE: Codebase Audit Reports - All 5 deliverables ready for review"
+```
+
+3. **Push to Main Branch:**
+```bash
+git push origin main
+```
+
+4. **Update Task Status:**
+- Update this file's STATUS line to: `**STATUS: ✅ COMPLETED - Reports pushed to main branch**`
+- Commit and push this update too
+
+### **Why This is CRITICAL:**
+
+✅ **Cross-Verification:** Manager (Antigravity) will pull from main branch to verify your work  
+✅ **Version Control:** All reports will be tracked in Git history  
+✅ **Collaboration:** Reports become accessible to the entire team  
+✅ **Audit Trail:** Clear record of when work was completed  
+
+### **This is NOT Optional:**
+
+❌ **DO NOT** consider the task complete until pushed to main branch  
+❌ **DO NOT** push incomplete reports  
+❌ **DO NOT** skip the commit message format  
+❌ **DO NOT** forget to update task status  
+
+**If you encounter Git push errors:**
+1. Pull latest changes: `git pull origin main`
+2. Resolve any conflicts if present
+3. Try pushing again
+4. If still fails, document the error in the task file and escalate
 
 ---
 
