@@ -4,7 +4,7 @@ Implements /logic3 command following V5 Architecture.
 """
 from telegram import Update
 from telegram.ext import ContextTypes
-from ...base_command_handler import BaseCommandHandler
+from ..base_command_handler import BaseCommandHandler
 
 class Logic3Handler(BaseCommandHandler):
     """Handle /logic3 command"""

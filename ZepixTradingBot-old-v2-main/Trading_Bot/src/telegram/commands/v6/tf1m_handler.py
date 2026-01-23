@@ -4,7 +4,7 @@ Implements /tf1m command following V5 Architecture.
 """
 from telegram import Update
 from telegram.ext import ContextTypes
-from ...base_command_handler import BaseCommandHandler
+from ..base_command_handler import BaseCommandHandler
 
 class Tf1mHandler(BaseCommandHandler):
     """Handle /tf1m command"""

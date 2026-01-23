@@ -411,18 +411,39 @@ class OrderExecutionService:
             
             filtered = []
             for pos in all_positions:
-                comment = getattr(pos, 'comment', '') or ''
+                # Handle both dict (from MT5Client) and object (raw MT5)
+                if isinstance(pos, dict):
+                    comment = pos.get('comment', '') or ''
+                    pos_symbol = pos.get('symbol', '')
+                    ticket = pos.get('ticket')
+                    pos_type = pos.get('type')
+                    volume = pos.get('volume')
+                    price_open = pos.get('price_open')
+                    sl = pos.get('sl')
+                    tp = pos.get('tp')
+                    profit = pos.get('profit')
+                else:
+                    comment = getattr(pos, 'comment', '') or ''
+                    pos_symbol = getattr(pos, 'symbol', '')
+                    ticket = getattr(pos, 'ticket')
+                    pos_type = getattr(pos, 'type')
+                    volume = getattr(pos, 'volume')
+                    price_open = getattr(pos, 'price_open')
+                    sl = getattr(pos, 'sl')
+                    tp = getattr(pos, 'tp')
+                    profit = getattr(pos, 'profit')
+
                 if plugin_id in comment:
-                    if symbol is None or getattr(pos, 'symbol', '') == symbol:
+                    if symbol is None or pos_symbol == symbol:
                         filtered.append({
-                            "ticket": pos.ticket,
-                            "symbol": pos.symbol,
-                            "type": "BUY" if pos.type == 0 else "SELL",
-                            "volume": pos.volume,
-                            "price_open": pos.price_open,
-                            "sl": pos.sl,
-                            "tp": pos.tp,
-                            "profit": pos.profit,
+                            "ticket": ticket,
+                            "symbol": pos_symbol,
+                            "type": "BUY" if pos_type == 0 else "SELL",
+                            "volume": volume,
+                            "price_open": price_open,
+                            "sl": sl,
+                            "tp": tp,
+                            "profit": profit,
                             "comment": comment
                         })
             

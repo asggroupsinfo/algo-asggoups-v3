@@ -13,7 +13,12 @@ Version: 1.0
 Created: 2026-01-12
 """
 
-import pyttsx3
+try:
+    import pyttsx3
+    PYTTSX3_AVAILABLE = True
+except ImportError:
+    PYTTSX3_AVAILABLE = False
+
 import logging
 from typing import Optional
 
@@ -47,6 +52,9 @@ class WindowsAudioPlayer:
         Returns:
             True if successful, False otherwise
         """
+        if not PYTTSX3_AVAILABLE:
+            return False
+
         if not text or not text.strip():
             self.logger.warning("Empty text provided, skipping")
             return False

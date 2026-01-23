@@ -68,7 +68,7 @@ from src.telegram.commands.trading.closeall_handler import CloseallHandler
 from src.telegram.commands.trading.orders_handler import OrdersHandler
 from src.telegram.commands.trading.positions_handler import PositionsHandler
 from src.telegram.commands.trading.history_handler import HistoryHandler
-from src.telegram.commands.trading.pnl_handler import PnlHandler
+from src.telegram.commands.trading.pnl_handler import PnLHandler
 from src.telegram.commands.trading.balance_handler import BalanceHandler
 from src.telegram.commands.trading.equity_handler import EquityHandler
 from src.telegram.commands.trading.margin_handler import MarginHandler
@@ -81,9 +81,9 @@ from src.telegram.commands.trading.filters_handler import FiltersHandler
 from src.telegram.commands.trading.partial_handler import PartialHandler
 
 # Risk
-from src.telegram.commands.risk.setsl_handler import SetslHandler
-from src.telegram.commands.risk.settp_handler import SettpHandler
-from src.telegram.commands.risk.setlot_handler import SetlotHandler
+from src.telegram.commands.risk.set_sl_handler import SetSLHandler
+from src.telegram.commands.risk.set_tp_handler import SetTPHandler
+from src.telegram.commands.risk.setlot_handler import SetLotHandler
 from src.telegram.commands.risk.dailylimit_handler import DailylimitHandler
 from src.telegram.commands.risk.maxloss_handler import MaxlossHandler
 from src.telegram.commands.risk.maxprofit_handler import MaxprofitHandler
@@ -168,10 +168,10 @@ from src.telegram.commands.profit.profit_config_handler import ProfitConfigHandl
 logger = logging.getLogger(__name__)
 
 class ControllerBot(BaseIndependentBot):
-    \"\"\"
+    """
     Independent Controller Bot for Zepix V6.
     Version 3.8.0 - Full Handler Coverage (144 Commands)
-    \"\"\"
+    """
     
     def __init__(self, token: str, chat_id: str = None, config: Dict = None):
         super().__init__(token, "ControllerBot")
@@ -226,7 +226,7 @@ class ControllerBot(BaseIndependentBot):
         self.orders_handler = OrdersHandler(self)
         self.positions_handler = PositionsHandler(self)
         self.history_handler = HistoryHandler(self)
-        self.pnl_handler = PnlHandler(self)
+        self.pnl_handler = PnLHandler(self)
         self.balance_handler = BalanceHandler(self)
         self.equity_handler = EquityHandler(self)
         self.margin_handler = MarginHandler(self)
@@ -239,9 +239,9 @@ class ControllerBot(BaseIndependentBot):
         self.partial_handler = PartialHandler(self)
 
         # Risk
-        self.setsl_handler = SetslHandler(self)
-        self.settp_handler = SettpHandler(self)
-        self.setlot_handler = SetlotHandler(self)
+        self.setsl_handler = SetSLHandler(self)
+        self.settp_handler = SetTPHandler(self)
+        self.setlot_handler = SetLotHandler(self)
         self.dailylimit_handler = DailylimitHandler(self)
         self.maxloss_handler = MaxlossHandler(self)
         self.maxprofit_handler = MaxprofitHandler(self)
@@ -302,15 +302,21 @@ class ControllerBot(BaseIndependentBot):
 
     def set_dependencies(self, trading_engine):
         self.trading_engine = trading_engine
+        logger.info("Dependencies set.")
+
+    async def initialize(self):
+        """Initialize bot and start background tasks"""
+        await super().initialize()
+
         if self.header_refresh_manager:
             self.header_refresh_manager.start()
-        
+            logger.info("Header Refresh Manager started")
+
         # Verify handlers
         self.verify_handler_registration()
-        logger.info("Dependencies set and handlers verified.")
 
     def _register_handlers(self):
-        \"\"\"Register ALL 144 Command Handlers\"\"\"
+        """Register ALL 144 Command Handlers"""
         if not self.app: return
 
         # System
@@ -341,7 +347,7 @@ class ControllerBot(BaseIndependentBot):
         logger.info("✅ All handlers registered via V5 Architecture")
 
     def verify_handler_registration(self):
-        \"\"\"Check if all critical handlers are wired\"\"\"
+        """Check if all critical handlers are wired"""
         # Simple verification logic
         handlers = [h for h in self.app.handlers[0] if isinstance(h, CommandHandler)]
         commands = [list(h.commands)[0] for h in handlers]
@@ -381,5 +387,3 @@ class ControllerBot(BaseIndependentBot):
         )
         full_text = f"{header}\\n{text}"
         await safe_edit_message(update, full_text, reply_markup, parse_mode="HTML")
-
-"""
