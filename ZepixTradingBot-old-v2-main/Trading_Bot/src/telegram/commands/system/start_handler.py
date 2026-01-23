@@ -1,6 +1,7 @@
 """
 /start command handler
 """
+from typing import Optional
 from telegram import Update
 from telegram.ext import ContextTypes
 from ..base_command_handler import BaseCommandHandler

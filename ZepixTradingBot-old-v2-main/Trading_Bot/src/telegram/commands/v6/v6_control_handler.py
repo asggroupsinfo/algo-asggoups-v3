@@ -4,7 +4,7 @@ Implements /v6_control command following V5 Architecture.
 """
 from telegram import Update
 from telegram.ext import ContextTypes
-from ...base_command_handler import BaseCommandHandler
+from ..base_command_handler import BaseCommandHandler
 
 class V6ControlHandler(BaseCommandHandler):
     """Handle /v6_control command"""

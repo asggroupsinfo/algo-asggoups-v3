@@ -32,6 +32,16 @@
                 "trend": "BULLISH",
                 "mode": "AUTO",
                 "last_update": "2025-11-09T00:50:12.290717"
+            },
+            "4h": {
+                "trend": "BULLISH",
+                "mode": "AUTO",
+                "last_update": "2026-01-23T05:56:34.463026"
+            },
+            "1d": {
+                "trend": "BULLISH",
+                "mode": "AUTO",
+                "last_update": "2026-01-23T05:56:34.465099"
             }
         },
         "AUDUSD": {

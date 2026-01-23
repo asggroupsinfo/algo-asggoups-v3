@@ -4,7 +4,7 @@ Implements /tf4h command following V5 Architecture.
 """
 from telegram import Update
 from telegram.ext import ContextTypes
-from ...base_command_handler import BaseCommandHandler
+from ..base_command_handler import BaseCommandHandler
 
 class Tf4hHandler(BaseCommandHandler):
     """Handle /tf4h command"""
